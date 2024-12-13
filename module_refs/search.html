@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search API &mdash; LabGuru API 1.1.31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=485f6e3b"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Inventory" href="inventory.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LabGuru API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../moduleref.html">Module Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="labguruitems.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eln.html">ELN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="invivo.html">In Vivo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html">Inventory</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Search API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface"><code class="docutils literal notranslate"><span class="pre">SearchInterface</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.labguru_name"><code class="docutils literal notranslate"><span class="pre">SearchInterface.labguru_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.asc"><code class="docutils literal notranslate"><span class="pre">SearchInterface.asc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.desc"><code class="docutils literal notranslate"><span class="pre">SearchInterface.desc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.__eq__"><code class="docutils literal notranslate"><span class="pre">SearchInterface.__eq__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.__ne__"><code class="docutils literal notranslate"><span class="pre">SearchInterface.__ne__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.__le__"><code class="docutils literal notranslate"><span class="pre">SearchInterface.__le__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.__lt__"><code class="docutils literal notranslate"><span class="pre">SearchInterface.__lt__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.__gt__"><code class="docutils literal notranslate"><span class="pre">SearchInterface.__gt__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.__ge__"><code class="docutils literal notranslate"><span class="pre">SearchInterface.__ge__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.contains"><code class="docutils literal notranslate"><span class="pre">SearchInterface.contains()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.not_contains"><code class="docutils literal notranslate"><span class="pre">SearchInterface.not_contains()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.starts_with"><code class="docutils literal notranslate"><span class="pre">SearchInterface.starts_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.ends_with"><code class="docutils literal notranslate"><span class="pre">SearchInterface.ends_with()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.is_null"><code class="docutils literal notranslate"><span class="pre">SearchInterface.is_null()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._search_api.SearchInterface.is_not_null"><code class="docutils literal notranslate"><span class="pre">SearchInterface.is_not_null()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LabGuru API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../moduleref.html">Module Reference</a></li>
+      <li class="breadcrumb-item active">Search API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/module_refs/search.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-LabGuruAPI._search_api">
+<span id="search-api"></span><h1>Search API<a class="headerlink" href="#module-LabGuruAPI._search_api" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruAPI._search_api.</span></span><span class="sig-name descname"><span class="pre">SearchInterface</span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface" title="Link to this definition"></a></dt>
+<dd><p>Represents an abstract interface for defining search operations and generating search operators.</p>
+<p>This class provides methods and operator overloads for creating search operations (like comparison,
+string containment, null checks, etc.) and constructing corresponding logical expressions using
+searchable attributes. It is intended to be used as a base interface for entities requiring advanced
+search capabilities.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.labguru_name">
+<span class="sig-name descname"><span class="pre">labguru_name</span></span><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.labguru_name" title="Link to this definition"></a></dt>
+<dd><p>The external name used in the context of Labguru search operations,
+or None if not specified. Only used while initializing the searchable object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.asc">
+<span class="sig-name descname"><span class="pre">asc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.asc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.asc" title="Link to this definition"></a></dt>
+<dd><p>Represents an ascending sort operation for the given property name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of LGSortOperator representing a sort operation in ascending order.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LGSortOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.desc">
+<span class="sig-name descname"><span class="pre">desc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.desc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.desc" title="Link to this definition"></a></dt>
+<dd><p>Represents a descending sort operation for the given property name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An instance of LGSortOperator representing a sort operation in descending order.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LGSortOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.__eq__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.__eq__" title="Link to this definition"></a></dt>
+<dd><p>Checks equality between the current object and another object, returning a
+search operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>LGSearchable</em><em> | </em><em>str</em><em> | </em><em>bool</em>) – The object to compare with the current
+<cite>LGSearchable</cite> instance for equality. It can be an instance of
+<cite>LGSearchable</cite>, <cite>str</cite>, or <cite>bool</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>An operator indicating the equality condition between</dt><dd><p>the current object and the provided <cite>other</cite> object.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.__ne__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.__ne__" title="Link to this definition"></a></dt>
+<dd><p>Compares the current instance with another value for inequality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>LGSearchable</em>) – The value to compare with the current instance.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A search operator representing the inequality comparison.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.__le__">
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.__le__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.__le__" title="Link to this definition"></a></dt>
+<dd><p>Compares the current object with another object to check if it is less than or
+equal to the other object. Generates a logical search operator for this comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>LGSearchable</em>) – The object to compare with the current object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A logical search operator representing the less-than-or-equal-to
+comparison.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.__lt__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.__lt__" title="Link to this definition"></a></dt>
+<dd><p>Compares the current object with another object to determine if the current
+object is less than the other object. This comparison generates a search
+operator encapsulating the comparison logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>LGSearchable</em>) – The object to compare with the current object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A search operator representing the less-than comparison.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.__gt__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.__gt__" title="Link to this definition"></a></dt>
+<dd><p>Compares the current object with another LGSearchable object to determine if the
+current object is greater than the other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The LGSearchable object to compare against the current object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Represents the comparison operation indicating whether
+the current object is greater than the provided object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.__ge__">
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.__ge__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.__ge__" title="Link to this definition"></a></dt>
+<dd><p>Compares the current instance with another LGSearchable object to determine if the
+current instance is greater than or equal to the other.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>LGSearchable</em>) – The LGSearchable instance to compare against.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An operator encapsulating the logical comparison of
+greater than or equal.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.contains" title="Link to this definition"></a></dt>
+<dd><p>Generates and applies a search operation for containment check.</p>
+<p>This method creates a search operator based on the specified containment
+logic. It uses the ‘contains’ operator to evaluate whether the current
+object contains the provided value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The value to be checked for containment within the current
+object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the search operation as an outcome of containment
+verification.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.not_contains">
+<span class="sig-name descname"><span class="pre">not_contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.not_contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.not_contains" title="Link to this definition"></a></dt>
+<dd><p>Determines whether a value is not contained within another value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – The value to determine if it is not contained in the target.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new search operator object configured with the ‘doesnotcontain’
+logic evaluating whether <cite>other</cite> is not contained in the subject.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.starts_with">
+<span class="sig-name descname"><span class="pre">starts_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.starts_with"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.starts_with" title="Link to this definition"></a></dt>
+<dd><p>Creates a search operator that checks whether the current value starts with
+the specified string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em>) – The string to check if the current value starts with.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A search operator for evaluating the condition.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.ends_with">
+<span class="sig-name descname"><span class="pre">ends_with</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.ends_with"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.ends_with" title="Link to this definition"></a></dt>
+<dd><p>Creates and returns a search operator to determine if a string ends with a
+specified substring.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> (<em>str</em>) – The substring to check if the string ends with.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An object representing the search operation for checking
+if the string ends with the specified substring.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.is_null">
+<span class="sig-name descname"><span class="pre">is_null</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.is_null"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.is_null" title="Link to this definition"></a></dt>
+<dd><p>Checks if the given attribute is null or empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A search operator object for evaluating a “null” or
+“empty” condition.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LGSearchOperator</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AttributeError</strong> – If the attribute <cite>base_type</cite> is not accessible.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._search_api.SearchInterface.is_not_null">
+<span class="sig-name descname"><span class="pre">is_not_null</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">LGSearchOperator</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_search_api.html#SearchInterface.is_not_null"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._search_api.SearchInterface.is_not_null" title="Link to this definition"></a></dt>
+<dd><p>Determines whether the value is not null or, in the case of string types, neither null nor empty, and
+creates a corresponding search operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A search operator instance that represents the “is not null” check, tailored for
+the specific type of the class.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>LGSearchOperator</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="inventory.html" class="btn btn-neutral float-left" title="Inventory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Robert Warden-Rothman, Mark Cerutti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

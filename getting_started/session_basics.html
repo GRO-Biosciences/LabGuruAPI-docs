@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SESSION Basics &mdash; LabGuru API 1.1.31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=485f6e3b"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using Collections" href="collections.html" />
+    <link rel="prev" title="Installing LabGuruAPI" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LabGuru API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../getting_started.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installing LabGuruAPI</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">SESSION</span></code> Basics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#logging-in">Logging in</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-management">Config Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#storing-a-value">Storing a value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retrieving-a-value">Retrieving a value</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-usage">Example Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#generic-api-interactions">Generic API Interactions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#http-request-methods">HTTP Request Methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Example Usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Using Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stocks.html">Using Stocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../moduleref.html">Module Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LabGuru API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../getting_started.html">Getting Started</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">SESSION</span></code> Basics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/session_basics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="session-basics">
+<h1><code class="docutils literal notranslate"><span class="pre">SESSION</span></code> Basics<a class="headerlink" href="#session-basics" title="Link to this heading"></a></h1>
+<p>The <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.SESSION" title="LabGuruAPI._base.SESSION"><code class="xref py py-data docutils literal notranslate"><span class="pre">SESSION</span></code></a> object handles all data exchange between Python and LabGuru. It will be configured and run any time you
+import it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">LabGuruAPI</span> <span class="kn">import</span> <span class="n">SESSION</span>
+</pre></div>
+</div>
+<p>It is also used by a number of search and convenience functions in the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem" title="LabGuruAPI._base.LabGuruItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabGuruItem</span></code></a> and
+<a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> classes.</p>
+<section id="logging-in">
+<h2>Logging in<a class="headerlink" href="#logging-in" title="Link to this heading"></a></h2>
+<p>The first time you import <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.SESSION" title="LabGuruAPI._base.SESSION"><code class="xref py py-data docutils literal notranslate"><span class="pre">SESSION</span></code></a> or run a method that interacts with the LabGuru API, you will be asked to log in
+with your LabGuru name and password. You can also force a login with the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.Session.login" title="LabGuruAPI._base.Session.login"><code class="xref py py-meth docutils literal notranslate"><span class="pre">login()</span></code></a>
+method.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">LabGuruAPI</span> <span class="kn">import</span> <span class="n">SESSION</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SESSION</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>
+<span class="go">Please Login to LabGuru</span>
+<span class="go">Username: first.last@grobio.com</span>
+<span class="go">Password: DontUseThis4Real</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Your password will be visible on the screen!</p>
+</div>
+<p>The <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.SESSION" title="LabGuruAPI._base.SESSION"><code class="xref py py-data docutils literal notranslate"><span class="pre">SESSION</span></code></a> object will then send your credentials to LabGuru and get a token that can be used for 1 month.</p>
+<p>If you have previously logged in, the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.SESSION" title="LabGuruAPI._base.SESSION"><code class="xref py py-data docutils literal notranslate"><span class="pre">SESSION</span></code></a> object will check if your token is still valid. If it is not, you will
+be asked to provide your credentials again. (We may reduce the output to only the first line at some point in the future.)</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">LabGuruAPI</span> <span class="kn">import</span> <span class="n">SESSION</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SESSION</span><span class="o">.</span><span class="n">login</span><span class="p">()</span>
+<span class="go">Trying token abcdefghijklmnopqrstuvwxyz123456789ABCDE</span>
+<span class="go">200</span>
+<span class="go">&#39;abcdefghijklmnopqrstuvwxyz123456789ABCDE&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="config-management">
+<h2>Config Management<a class="headerlink" href="#config-management" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.SESSION" title="LabGuruAPI._base.SESSION"><code class="xref py py-data docutils literal notranslate"><span class="pre">SESSION</span></code></a> can also be used to interact with a local configuration file. This will allow you to store simple strings
+(like the auth token) and reuse them between scripts.</p>
+<section id="storing-a-value">
+<h3>Storing a value<a class="headerlink" href="#storing-a-value" title="Link to this heading"></a></h3>
+<p>You can store a value for later using the <code class="docutils literal notranslate"><span class="pre">SESSION.set_config_value()</span></code> method.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">Session.</span></span><span class="sig-name descname"><span class="pre">set_config_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_base.html#Session.set_config_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Writes a key-value pair to the configuration file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>section</strong> – Config file section</p></li>
+<li><p><strong>key</strong> – Config key to set</p></li>
+<li><p><strong>value</strong> – Value of the config key. Will be converted to a string before writing</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="retrieving-a-value">
+<h3>Retrieving a value<a class="headerlink" href="#retrieving-a-value" title="Link to this heading"></a></h3>
+<p>You can retrieve a previously stored value using the <code class="docutils literal notranslate"><span class="pre">SESSION.get_config_value()</span></code> method.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">Session.</span></span><span class="sig-name descname"><span class="pre">get_config_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">section</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_base.html#Session.get_config_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieves a configuration value from the config file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>section</strong> – Config file section</p></li>
+<li><p><strong>key</strong> – Config key to retrieve</p></li>
+<li><p><strong>ask</strong> – If true, prompts the user for a value if the key is not found. Will store and return the value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The configuration value string</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>KeyError</strong> – The configuration Section or Key does not exist if the ask parameter is False</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="example-usage">
+<h3>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading"></a></h3>
+<p>In the <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid" title="LabGuruAPI._collections.Plasmid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plasmid</span></code></a> class, config values are used for setting the
+<a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid.origin" title="LabGuruAPI._collections.Plasmid.origin"><code class="xref py py-attr docutils literal notranslate"><span class="pre">origin</span></code></a> property. Our LIMS structure limits the value of
+<a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid.origin" title="LabGuruAPI._collections.Plasmid.origin"><code class="xref py py-attr docutils literal notranslate"><span class="pre">origin</span></code></a> to a specific list of options. If a user attempts to set
+<a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid.origin" title="LabGuruAPI._collections.Plasmid.origin"><code class="xref py py-attr docutils literal notranslate"><span class="pre">origin</span></code></a> to a different value, it needs to be substituted for one of the
+valid options. The setter method presents the user with the list of options, and prompts them to choose the correct one.
+This is useful, but would get tedious if you had a long list of plasmids with the same incorrect origin name. You can
+expect to see the name again in future projects, as well. So the setter method uses the config file to map the incorrect
+origin names to allowed ones.</p>
+<p>Let’s say you’re adding a plasmid with the <code class="docutils literal notranslate"><span class="pre">'p15A'</span></code> origin. On the input spreadsheet, though, the plasmid is listed as
+<code class="docutils literal notranslate"><span class="pre">'pA15'</span></code>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">plasmid</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;pA15&#39;</span>
+</pre></div>
+</div>
+<p>This is not a valid option, but before asking the user what they meant, we check to see if we’ve seen this typo before.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SESSION</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s1">&#39;ORIGINS&#39;</span><span class="p">,</span> <span class="s1">&#39;pA15&#39;</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;p15A&#39;</span>
+</pre></div>
+</div>
+<p>Great! We’ve seen this before and can set it to the correct value. But if we hadn’t…</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SESSION</span><span class="o">.</span><span class="n">get_config_value</span><span class="p">(</span><span class="s1">&#39;ORIGINS&#39;</span><span class="p">,</span> <span class="s1">&#39;pA15&#39;</span><span class="p">,</span> <span class="n">ask</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">KeyError: &#39;pA15&#39;</span>
+</pre></div>
+</div>
+<p>In this case, the method would prompt the user to choose the correct value from a list. We’ll then store it for next
+time.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">good_val</span> <span class="o">=</span> <span class="n">prompt</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># user selects p15A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SESSION</span><span class="o">.</span><span class="n">set_config_value</span><span class="p">(</span><span class="s1">&#39;ORIGINS&#39;</span><span class="p">,</span> <span class="s1">&#39;pA15&#39;</span><span class="p">,</span> <span class="n">good_val</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="generic-api-interactions">
+<h2>Generic API Interactions<a class="headerlink" href="#generic-api-interactions" title="Link to this heading"></a></h2>
+<section id="http-request-methods">
+<h3>HTTP Request Methods<a class="headerlink" href="#http-request-methods" title="Link to this heading"></a></h3>
+<p>SESSION provides the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.Session.get" title="LabGuruAPI._base.Session.get"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get()</span></code></a>, <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.Session.post" title="LabGuruAPI._base.Session.post"><code class="xref py py-meth docutils literal notranslate"><span class="pre">post()</span></code></a>,
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.Session.put" title="LabGuruAPI._base.Session.put"><code class="xref py py-meth docutils literal notranslate"><span class="pre">put()</span></code></a>, and <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.Session.del_request" title="LabGuruAPI._base.Session.del_request"><code class="xref py py-meth docutils literal notranslate"><span class="pre">del_request()</span></code></a> methods to interact with
+any API endpoints that are not built into a corresponding <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem" title="LabGuruAPI._base.LabGuruItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabGuruItem</span></code></a> object.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">Session.</span></span><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_base.html#Session.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Sends a GET request to a specified API endpoint using given data and returns
+the response as a JSON object if the request is successful.</p>
+<p>The method appends the authentication token to the request data and sends a GET
+request to the constructed API path using the input endpoint and additional
+data. If the response status is successful, it returns the response content as
+a JSON object. Otherwise, it returns None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endpoint</strong> – The API endpoint to send the GET request to.</p></li>
+<li><p><strong>**data</strong> – Additional data to be included in the request. This data will be
+sent as a JSON object in the GET request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the JSON response data if the request is successful.
+Returns None if the request fails.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="id1">
+<h3>Example Usage<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>This package does not provide a class for interacting with LabGuru’s Equipment collection, but the API does. If, for
+some reason, you wanted to list all of the equipment in company, you could make a <code class="docutils literal notranslate"><span class="pre">HTTP</span> <span class="pre">GET</span></code> call to the
+<code class="docutils literal notranslate"><span class="pre">api/v1/instruments</span></code> endpoint. You will need to add the endpoint as the full string, or the part after <code class="docutils literal notranslate"><span class="pre">api/v1/</span></code>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SESSION</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;instruments&#39;</span><span class="p">)</span>
+<span class="go">{&#39;items&#39;:[{... instrument 1 ...}, {... instrument 2 ...}, ...]}</span>
+</pre></div>
+</div>
+<p>If the call is successful, it will return a dictionary corresponding to the parsed JSON result. If the call is
+unsuccessful, it will return <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>You can also pass arguments to the methods, which will be included as JSON in the request body. Say you wanted to add
+a new type of experiment flag. Looking at the <a class="reference external" href="https://my.labguru.com/api-docs/index.html#/Flags/post_api_v1_flags">API documentation</a>,
+you will need to provide a JSON string with the <code class="docutils literal notranslate"><span class="pre">'item'</span></code> key, which is a dictionary of the new flag’s properties.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_flag</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Needs Review&#39;</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s1">&#39;question&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange-light&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Please review this!&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SESSION</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;flags&#39;</span><span class="p">,</span> <span class="n">item</span><span class="o">=</span><span class="n">new_flag</span><span class="p">)</span>
+<span class="go">{&#39;flag&#39;: {&#39;id&#39;: 3, &#39;title&#39;: &#39;Needs Review&#39;, ...}}</span>
+</pre></div>
+</div>
+<p>For all of the request types, your current active authorization token will be added in the appropriate location.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installing LabGuruAPI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="collections.html" class="btn btn-neutral float-right" title="Using Collections" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Robert Warden-Rothman, Mark Cerutti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

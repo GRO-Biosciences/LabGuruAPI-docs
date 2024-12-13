@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using Stocks &mdash; LabGuru API 1.1.31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=485f6e3b"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module Reference" href="../moduleref.html" />
+    <link rel="prev" title="Using Collections" href="collections.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LabGuru API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../getting_started.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installing LabGuruAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_basics.html"><code class="docutils literal notranslate"><span class="pre">SESSION</span></code> Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Using Collections</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Using Stocks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-basics">The Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#barcodes">Barcodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#concentrations">Concentrations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#available-units">Available Units</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-concentration-using-stock-properties">Setting Concentration using Stock properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-concentration-using-strings">Setting Concentration using Strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-concentrations-directly">Setting Concentrations Directly</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plates-and-boxes">Plates and Boxes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-plate-box">Creating a Plate/Box</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-samples-to-a-plate">Adding Samples to a Plate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-samples-from-a-plate">Getting Samples from a Plate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iterating-through-a-plate">Iterating through a Plate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-reactions-in-plates">Working with Reactions in Plates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../moduleref.html">Module Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LabGuru API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../getting_started.html">Getting Started</a></li>
+      <li class="breadcrumb-item active">Using Stocks</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/stocks.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-stocks">
+<h1>Using Stocks<a class="headerlink" href="#using-stocks" title="Link to this heading"></a></h1>
+<section id="the-basics">
+<h2>The Basics<a class="headerlink" href="#the-basics" title="Link to this heading"></a></h2>
+<p>In LabGuru, <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> items represent a physical instantiation of a <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> item. So <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> attributes
+are used to store information like location, concentration, and storage buffer rather than things like genotype or
+molecular weight, which are conceptual properties of every instance of the <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> item. These two concepts
+are linked via the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.stockable" title="LabGuruAPI._inventory.Stock.stockable"><code class="xref py py-attr docutils literal notranslate"><span class="pre">stockable</span></code></a> attribute.</p>
+<p>A <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> object’s location is recorded by the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.storage" title="LabGuruAPI._inventory.Stock.storage"><code class="xref py py-attr docutils literal notranslate"><span class="pre">storage</span></code></a> and <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.location_in_box" title="LabGuruAPI._inventory.Stock.location_in_box"><code class="xref py py-attr docutils literal notranslate"><span class="pre">location_in_box</span></code></a>
+attributes. It’s generally easier to set this through the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> or <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box" title="LabGuruAPI._inventory.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> that the stock will be stored in.</p>
+</section>
+<section id="barcodes">
+<h2>Barcodes<a class="headerlink" href="#barcodes" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.barcode" title="LabGuruAPI._inventory.Stock.barcode"><code class="xref py py-attr docutils literal notranslate"><span class="pre">barcode</span></code></a> attribute of a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> is used to record a barcode that has been printed on the
+tube. LabGuru’s API allows for the direct lookup of a stock via its barcode, so in addition to <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_name" title="LabGuruAPI._base.LabGuruItem.from_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_name()</span></code></a>
+and <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_id" title="LabGuruAPI._base.LabGuruItem.from_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_id()</span></code></a>, we can use the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.from_barcode" title="LabGuruAPI._inventory.Stock.from_barcode"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_barcode()</span></code></a> method to get a stock from the API.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>By GRO convention, a stock’s name in generally the same as it’s stockable. This results in many stocks with the same
+name, making <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_name" title="LabGuruAPI._base.LabGuruItem.from_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_name()</span></code></a> pretty much useless. Please don’t use it unless you know your stock has been
+given a unique name.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.from_barcode" title="LabGuruAPI._inventory.Stock.from_barcode"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_barcode()</span></code></a> will also match a stock’s ID if no matching barcode is found (LabGuru implementation,
+not ours). When designing stock barcodes, please ensure the numbers are large enough to not collide with stock IDs
+or are alphanumeric.</p>
+</div>
+</section>
+<section id="concentrations">
+<h2>Concentrations<a class="headerlink" href="#concentrations" title="Link to this heading"></a></h2>
+<p>One of the main utilities of the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> class is recording the stock’s concentration. LabGuru records this as two
+separate attributes <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.concentration" title="LabGuruAPI._inventory.Stock.concentration"><code class="xref py py-attr docutils literal notranslate"><span class="pre">concentration</span></code></a> and <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.concentration_unit_id" title="LabGuruAPI._inventory.Stock.concentration_unit_id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">concentration_unit_id</span></code></a>. While separating
+these and using a controlled vocabulary for units makes a lot of sense, it also makes concentrations hard to work with.
+So most of the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> class’s code is dedicated to unit conversion.</p>
+<section id="available-units">
+<h3>Available Units<a class="headerlink" href="#available-units" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Units (unit ID)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Molarity</p></td>
+<td><p>M (11), mM (12), µM (13), nM (20)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Molality</p></td>
+<td><p>mg/mL (9), g/L (10), µg/mL (14), ng/µL (15), g/mL (18)</p></td>
+</tr>
+<tr class="row-even"><td><p>Other</p></td>
+<td><p>ratio (16), % (17), OD (19)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="setting-concentration-using-stock-properties">
+<h3>Setting Concentration using Stock properties<a class="headerlink" href="#setting-concentration-using-stock-properties" title="Link to this heading"></a></h3>
+<p>The easiest way to set a stock’s concentration is to use one of the following properties: <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.molarity" title="LabGuruAPI._inventory.Stock.molarity"><code class="xref py py-attr docutils literal notranslate"><span class="pre">molarity</span></code></a>,
+<a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.micromolarity" title="LabGuruAPI._inventory.Stock.micromolarity"><code class="xref py py-attr docutils literal notranslate"><span class="pre">micromolarity</span></code></a>, <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.nanomolarity" title="LabGuruAPI._inventory.Stock.nanomolarity"><code class="xref py py-attr docutils literal notranslate"><span class="pre">nanomolarity</span></code></a>, or <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.ng_ul" title="LabGuruAPI._inventory.Stock.ng_ul"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ng_ul</span></code></a>.
+Once you set one value, you can retrieve any of the different units. If the object is a subclass of <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Weighted" title="LabGuruAPI._collections.Weighted"><code class="xref py py-class docutils literal notranslate"><span class="pre">Weighted</span></code></a>,
+you can even convert between molarity and ng/μL.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">LabGuruAPI</span> <span class="kn">import</span> <span class="n">Plasmid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;pGRO-C1228&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">add_stock</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">molarity</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">micromolarity</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="go">&#39;1,000,000.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">nanomolarity</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="go">&#39;1,000,000,000.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">ng_ul</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="go">&#39;3,655,887,400.0&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-concentration-using-strings">
+<h3>Setting Concentration using Strings<a class="headerlink" href="#setting-concentration-using-strings" title="Link to this heading"></a></h3>
+<p>The <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> class’s <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.concentration_string" title="LabGuruAPI._inventory.Stock.concentration_string"><code class="xref py py-attr docutils literal notranslate"><span class="pre">concentration_string</span></code></a> property can be used to set or
+retrieve the stock’s concentration from a sting. This is usually used to read the concentration from a spreadsheet or
+to display it in a human-readable fashion. If you want it to be easily readable, make sure to set the correct unit.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">concentration_string</span>
+<span class="go">&#39;1.00 M&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">concentration_string</span> <span class="o">=</span> <span class="s1">&#39;1 mM&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">concentration_string</span>
+<span class="go">&#39;1.00 mM&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">micromolarity</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="go">&#39;1,000.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">micromolarity</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">micromolarity</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">concentration_string</span>
+<span class="go">&#39;1000.00 µM&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="setting-concentrations-directly">
+<h3>Setting Concentrations Directly<a class="headerlink" href="#setting-concentrations-directly" title="Link to this heading"></a></h3>
+<p>You can also set the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.concentration" title="LabGuruAPI._inventory.Stock.concentration"><code class="xref py py-attr docutils literal notranslate"><span class="pre">concentration</span></code></a> and
+<a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.concentration_unit_id" title="LabGuruAPI._inventory.Stock.concentration_unit_id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">concentration_unit_id</span></code></a>/<a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock.concentration_unit_name" title="LabGuruAPI._inventory.Stock.concentration_unit_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">concentration_unit_name</span></code></a>
+properties directly. This can be useful if the value and unit are split between spreadsheet columns or if you need a unit
+not covered by the defined properties above.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rows</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;concentration&#39;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;ng/μL&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">s</span><span class="o">.</span><span class="n">concentration</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;concentration&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">s</span><span class="o">.</span><span class="n">concentration_unit_name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">ng_ul</span>
+<span class="go">27.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">nanomolarity</span>
+<span class="go">7.385347809125631</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="plates-and-boxes">
+<h2>Plates and Boxes<a class="headerlink" href="#plates-and-boxes" title="Link to this heading"></a></h2>
+<p>Stocks’ storage locations can be described with the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box" title="LabGuruAPI._inventory.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> and <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> classes. <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a>
+is a subclass of <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box" title="LabGuruAPI._inventory.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> and both are subclasses of <code class="xref py py-class docutils literal notranslate"><span class="pre">HasWells</span></code>,
+which provides methods for adding/retrieving stocks and converting between well names, LabGuru well numbering, and
+Tecan well numbering. Example location IDs for a standard 96-well layout in each convention are shown below.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Numbering Convention</p></th>
+<th class="head"><p>A1</p></th>
+<th class="head"><p>B1</p></th>
+<th class="head"><p>C1</p></th>
+<th class="head"><p>A2</p></th>
+<th class="head"><p>A3</p></th>
+<th class="head"><p>H12</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>By well name (short)</p></td>
+<td><p>A1</p></td>
+<td><p>B1</p></td>
+<td><p>C1</p></td>
+<td><p>A2</p></td>
+<td><p>A3</p></td>
+<td><p>H12</p></td>
+</tr>
+<tr class="row-odd"><td><p>By well name (long)</p></td>
+<td><p>A01</p></td>
+<td><p>B01</p></td>
+<td><p>C01</p></td>
+<td><p>A02</p></td>
+<td><p>A03</p></td>
+<td><p>H12</p></td>
+</tr>
+<tr class="row-even"><td><p>By LabGuru position</p></td>
+<td><p>1</p></td>
+<td><p>13</p></td>
+<td><p>25</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>96</p></td>
+</tr>
+<tr class="row-odd"><td><p>By Tecan position</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>3</p></td>
+<td><p>9</p></td>
+<td><p>17</p></td>
+<td><p>96</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The module’s code is based on the “LabGuru position” convention. Using methods for another convention simply converts
+the position to the LabGuru convention and then calls the LabGuru version of the method. So, if there isn’t a reason
+to use well names or Tecan positions, it’s faster to use the LabGuru convention.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box" title="LabGuruAPI._inventory.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> and <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> map to the <code class="docutils literal notranslate"><span class="pre">Box</span></code> collection in LabGuru. LabGuru also has
+a <code class="docutils literal notranslate"><span class="pre">Plate</span></code> collection, which are used as part of the ELN and very much not useful for inventory management. Trust us,
+we tried…</p>
+</div>
+<section id="creating-a-plate-box">
+<h3>Creating a Plate/Box<a class="headerlink" href="#creating-a-plate-box" title="Link to this heading"></a></h3>
+<p>Creating a new <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> or <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box" title="LabGuruAPI._inventory.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> is handled the same way as adding a new <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> item (see <a class="reference internal" href="collections.html#new-item"><span class="std std-ref">Adding New Items</span></a>).
+The item’s size will default to an 8x12 standard 96-well plate. If you want something else, you need to include the
+<code class="docutils literal notranslate"><span class="pre">rows</span></code> and <code class="docutils literal notranslate"><span class="pre">cols</span></code> keywords in the <code class="xref py py-meth docutils literal notranslate"><span class="pre">make_new()</span></code> call. For instance, if you had
+a new 9x9 box for 1.5/2 mL tubes, you would instantiate it like this:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">new_box</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="n">make_new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;My Next Box&#39;</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">new_box</span><span class="o">.</span><span class="n">lg_sync</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Instead of the <code class="docutils literal notranslate"><span class="pre">name</span></code> attribute, <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> objects should be instantiated with:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.PlateDescriptorMixin.barcode" title="LabGuruAPI._inventory.PlateDescriptorMixin.barcode"><code class="xref py py-attr docutils literal notranslate"><span class="pre">barcode</span></code></a></p></td>
+<td><p>The scannable and/ or human-readable barcode (this will map to <code class="docutils literal notranslate"><span class="pre">name</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.PlateDescriptorMixin.label" title="LabGuruAPI._inventory.PlateDescriptorMixin.label"><code class="xref py py-attr docutils literal notranslate"><span class="pre">label</span></code></a></p></td>
+<td><p>A human-readable description of the plate. It should be written on the physical plate somewhere.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.PlateDescriptorMixin.plate_type" title="LabGuruAPI._inventory.PlateDescriptorMixin.plate_type"><code class="xref py py-attr docutils literal notranslate"><span class="pre">plate_type</span></code></a></p></td>
+<td><p>The type of plate you’re storing. ie) Bio-Rad 96-well PCR, Echo 384-well PP. It should help someone find it in storage.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="adding-samples-to-a-plate">
+<h3>Adding Samples to a Plate<a class="headerlink" href="#adding-samples-to-a-plate" title="Link to this heading"></a></h3>
+<p>Adding things into wells/positions on a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> is easily done with a few helper methods. All of these methods will
+return a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> object <strong>that has already been synced to LabGuru</strong>. There’s no need to run <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.lg_sync" title="LabGuruAPI._base.LabGuruItem.lg_sync"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lg_sync()</span></code></a> unless you
+update it further. A table of helper functions by position convention is listed below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Class you want to add</p></th>
+<th class="head"><p>well_name</p></th>
+<th class="head"><p>LabGuru numbering</p></th>
+<th class="head"><p>Tecan numbering</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.copy_stock_to_well" title="LabGuruAPI._base.HasWells.copy_stock_to_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">copy_stock_to_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.copy_stock_to_position" title="LabGuruAPI._base.HasWells.copy_stock_to_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">copy_stock_to_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.copy_stock_to_tecan_position" title="LabGuruAPI._base.HasWells.copy_stock_to_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">copy_stock_to_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box.add_sample_to_well" title="LabGuruAPI._inventory.Box.add_sample_to_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_sample_to_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box.add_sample_to_position" title="LabGuruAPI._inventory.Box.add_sample_to_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_sample_to_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Box.add_sample_to_tecan_position" title="LabGuruAPI._inventory.Box.add_sample_to_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_sample_to_tecan_position()</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="getting-samples-from-a-plate">
+<h3>Getting Samples from a Plate<a class="headerlink" href="#getting-samples-from-a-plate" title="Link to this heading"></a></h3>
+<p>Retrieving samples from a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> object can be achieved using various helper methods provided by the API. These methods
+allow you to access samples in specific wells or positions based on the numbering convention you use. Each method will
+return a list of <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a> object that represents the samples stored in the respective position. The available helper
+methods are listed in the table below:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Position Convention</p></th>
+<th class="head"><p>Well Name</p></th>
+<th class="head"><p>LabGuru Numbering</p></th>
+<th class="head"><p>Tecan Numbering</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Method</p></td>
+<td><p><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.stocks_from_well" title="LabGuruAPI._base.HasWells.stocks_from_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stocks_from_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.stocks_from_position" title="LabGuruAPI._base.HasWells.stocks_from_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stocks_from_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.stocks_from_tecan_position" title="LabGuruAPI._base.HasWells.stocks_from_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stocks_from_tecan_position()</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>The example below illustrates how to retrieve a stock object from a specific well in a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> using different numbering
+conventions.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve a plate object first</span>
+<span class="n">my_plate</span> <span class="o">=</span> <span class="n">Plate</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;Example Plate&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get a sample using the well name (e.g., A1)</span>
+<span class="n">stock</span> <span class="o">=</span> <span class="n">my_plate</span><span class="o">.</span><span class="n">get_stock_from_well</span><span class="p">(</span><span class="s1">&#39;A1&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stock</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Get a sample using LabGuru numbering (e.g., position 1)</span>
+<span class="n">stock</span> <span class="o">=</span> <span class="n">my_plate</span><span class="o">.</span><span class="n">get_stock_from_position</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stock</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Get a sample using Tecan numbering (e.g., position 2)</span>
+<span class="n">stock</span> <span class="o">=</span> <span class="n">my_plate</span><span class="o">.</span><span class="n">get_stock_from_tecan_position</span><span class="p">(</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">stock</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="iterating-through-a-plate">
+<h3>Iterating through a Plate<a class="headerlink" href="#iterating-through-a-plate" title="Link to this heading"></a></h3>
+<p>You can use the <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> class’s <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.iter_well_names" title="LabGuruAPI._base.HasWells.iter_well_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iter_well_names()</span></code></a>,
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.iter_positions" title="LabGuruAPI._base.HasWells.iter_positions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iter_positions()</span></code></a>, and <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.HasWells.iter_tecan_positions" title="LabGuruAPI._base.HasWells.iter_tecan_positions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">iter_tecan_positions()</span></code></a>
+methods to iterate over positions in a plate.</p>
+<p>For example, you could use these methods to add a strain to every well of an overnight plate.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Strain</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;GRO24-6734&#39;</span><span class="p">)</span>
+<span class="n">plate</span> <span class="o">=</span> <span class="n">Plate</span><span class="o">.</span><span class="n">add_new</span><span class="p">(</span><span class="n">barcode</span><span class="o">=</span><span class="s1">&#39;0000-ONC-001&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;3xU Overnight plate&#39;</span><span class="p">,</span> <span class="n">plate_type</span><span class="o">=</span><span class="s1">&#39;2mL Deepwell 96&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">plate</span><span class="o">.</span><span class="n">iter_positions</span><span class="p">():</span>
+    <span class="n">plate</span><span class="o">.</span><span class="n">add_sample_to_position</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also use these methods to get plasmids from a transformation plate and generate daughter strains.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">base_strain</span> <span class="o">=</span> <span class="n">Strain</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;GRO24-6763&#39;</span><span class="p">)</span>
+<span class="n">plas_plate</span> <span class="o">=</span> <span class="n">Plate</span><span class="o">.</span><span class="n">from_barcode</span><span class="p">(</span><span class="s1">&#39;0000-PLA-003&#39;</span><span class="p">)</span>
+<span class="n">out_plate</span> <span class="o">=</span> <span class="n">Plate</span><span class="o">.</span><span class="n">add_new</span><span class="p">(</span><span class="n">barcode</span><span class="o">=</span><span class="s1">&#39;0000-CCT-003&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;pAMF expression transformations&#39;</span><span class="p">,</span> <span class="n">plate_type</span><span class="o">=</span><span class="s1">&#39;Bio-Rad 96-well PCR&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">plas_plate</span><span class="o">.</span><span class="n">iter_positions</span><span class="p">():</span>
+    <span class="n">stocks</span> <span class="o">=</span> <span class="n">plas_plate</span><span class="o">.</span><span class="n">stocks_from_position</span><span class="p">(</span><span class="n">pos</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">stocks</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stocks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Plasmid</span><span class="p">)):</span>
+        <span class="k">continue</span>
+
+    <span class="n">plas</span> <span class="o">=</span> <span class="n">stocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">daughter</span> <span class="o">=</span> <span class="n">base_strain</span><span class="o">.</span><span class="n">make_new_derived_strain</span><span class="p">(</span><span class="s1">&#39;next_name&#39;</span><span class="p">,</span> <span class="n">plas</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">additonal_plasmids</span><span class="o">=</span><span class="n">plas</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">daughter</span><span class="o">.</span><span class="n">lg_sync</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="working-with-reactions-in-plates">
+<h2>Working with Reactions in Plates<a class="headerlink" href="#working-with-reactions-in-plates" title="Link to this heading"></a></h2>
+<p>Each well in a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a> can only hold 1 stock. This is usually fine in the context of inventory management, but is quite
+limiting when looking at plates that are used in reactions because they have many components we may want to track. To
+enable this type of tracking, we implemented a number of methods that can add a stock to a plate while assigning it a
+reaction role. Those roles are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Role</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reactant</p></td>
+<td><p>Collection items that are consumed during the reaction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Product</p></td>
+<td><p>The major or desired product of the reaction.</p></td>
+</tr>
+<tr class="row-even"><td><p>Side Product</p></td>
+<td><p>Other products of the reaction.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Catalyst</p></td>
+<td><p>A collection item that aids in the reaction, but is neither consumed nor destroyed (enzymes)</p></td>
+</tr>
+<tr class="row-even"><td><p>Bystander</p></td>
+<td><p>A collection item that does not participate in the reaction (buffers)</p></td>
+</tr>
+</tbody>
+</table>
+<p>To add reaction components into a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a>, use the following methods depending on the numbering convention:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Well Name</p></th>
+<th class="head"><p>LabGuru Numbering</p></th>
+<th class="head"><p>Tecan Numbering</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reactants</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_reactant_to_well" title="LabGuruAPI._inventory.Plate.add_reactant_to_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_reactant_to_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_reactant_to_position" title="LabGuruAPI._inventory.Plate.add_reactant_to_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_reactant_to_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_reactant_to_tecan_position" title="LabGuruAPI._inventory.Plate.add_reactant_to_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_reactant_to_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Products</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_product_to_well" title="LabGuruAPI._inventory.Plate.add_product_to_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_product_to_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_product_to_position" title="LabGuruAPI._inventory.Plate.add_product_to_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_product_to_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_product_to_tecan_position" title="LabGuruAPI._inventory.Plate.add_product_to_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_product_to_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Side Products</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_side_product_to_well" title="LabGuruAPI._inventory.Plate.add_side_product_to_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_side_product_to_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_side_product_to_position" title="LabGuruAPI._inventory.Plate.add_side_product_to_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_side_product_to_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_side_product_to_tecan_position" title="LabGuruAPI._inventory.Plate.add_side_product_to_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_side_product_to_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Catalysts</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_catalyst_to_well" title="LabGuruAPI._inventory.Plate.add_catalyst_to_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_catalyst_to_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_catalyst_to_position" title="LabGuruAPI._inventory.Plate.add_catalyst_to_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_catalyst_to_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_catalyst_to_tecan_position" title="LabGuruAPI._inventory.Plate.add_catalyst_to_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_catalyst_to_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bystanders</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_bystander_to_well" title="LabGuruAPI._inventory.Plate.add_bystander_to_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_bystander_to_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_bystander_to_position" title="LabGuruAPI._inventory.Plate.add_bystander_to_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_bystander_to_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.add_bystander_to_tecan_position" title="LabGuruAPI._inventory.Plate.add_bystander_to_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_bystander_to_tecan_position()</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Here’s an example of how to add reactants, products, and side products using different conventions:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve a plate object first</span>
+<span class="n">my_plate</span> <span class="o">=</span> <span class="n">Plate</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;Example Plate&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add a reactant to well A1</span>
+<span class="n">my_plate</span><span class="o">.</span><span class="n">add_reactant_to_well</span><span class="p">(</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="n">reactant_name</span><span class="o">=</span><span class="s1">&#39;Reactant A&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add a product using LabGuru numbering (e.g., position 1)</span>
+<span class="n">my_plate</span><span class="o">.</span><span class="n">add_product_to_position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">product_name</span><span class="o">=</span><span class="s1">&#39;Product B&#39;</span><span class="p">)</span>
+
+<span class="c1"># Add a side product using Tecan numbering (e.g., position 5)</span>
+<span class="n">my_plate</span><span class="o">.</span><span class="n">add_side_product_to_tecan_position</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">side_product_name</span><span class="o">=</span><span class="s1">&#39;Side Product C&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To retrieve reaction components from wells or positions in a <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plate</span></code></a>, use the following helper methods:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Well Name</p></th>
+<th class="head"><p>LabGuru Numbering</p></th>
+<th class="head"><p>Tecan Numbering</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Reactants</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_reactants_from_well" title="LabGuruAPI._inventory.Plate.get_reactants_from_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_reactants_from_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_reactants_from_position" title="LabGuruAPI._inventory.Plate.get_reactants_from_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_reactants_from_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_reactants_from_tecan_position" title="LabGuruAPI._inventory.Plate.get_reactants_from_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_reactants_from_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Products</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_products_from_well" title="LabGuruAPI._inventory.Plate.get_products_from_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_products_from_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_products_from_position" title="LabGuruAPI._inventory.Plate.get_products_from_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_products_from_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_products_from_tecan_position" title="LabGuruAPI._inventory.Plate.get_products_from_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_products_from_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Side Products</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_side_products_from_well" title="LabGuruAPI._inventory.Plate.get_side_products_from_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_side_products_from_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_side_products_from_position" title="LabGuruAPI._inventory.Plate.get_side_products_from_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_side_products_from_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_side_products_from_tecan_position" title="LabGuruAPI._inventory.Plate.get_side_products_from_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_side_products_from_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Catalysts</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_catalysts_from_well" title="LabGuruAPI._inventory.Plate.get_catalysts_from_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_catalysts_from_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_catalysts_from_position" title="LabGuruAPI._inventory.Plate.get_catalysts_from_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_catalysts_from_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_catalysts_from_tecan_position" title="LabGuruAPI._inventory.Plate.get_catalysts_from_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_catalysts_from_tecan_position()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Bystanders</p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_bystanders_from_well" title="LabGuruAPI._inventory.Plate.get_bystanders_from_well"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bystanders_from_well()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_bystanders_from_position" title="LabGuruAPI._inventory.Plate.get_bystanders_from_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bystanders_from_position()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Plate.get_bystanders_from_tecan_position" title="LabGuruAPI._inventory.Plate.get_bystanders_from_tecan_position"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_bystanders_from_tecan_position()</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>Here’s an example of how to retrieve reactants, products, and side products using different numbering conventions:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="c1"># Retrieve a plate object first</span>
+<span class="n">my_plate</span> <span class="o">=</span> <span class="n">Plate</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;Example Plate&#39;</span><span class="p">)</span>
+
+<span class="c1"># Retrieve reactants from well A1</span>
+<span class="n">reactants</span> <span class="o">=</span> <span class="n">my_plate</span><span class="o">.</span><span class="n">reactants_from_well</span><span class="p">(</span><span class="s1">&#39;A1&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">reactant</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">reactant</span> <span class="ow">in</span> <span class="n">reactants</span><span class="p">])</span>
+
+<span class="c1"># Retrieve products from position 1 (LabGuru numbering)</span>
+<span class="n">products</span> <span class="o">=</span> <span class="n">my_plate</span><span class="o">.</span><span class="n">products_from_position</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">product</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">])</span>
+
+<span class="c1"># Retrieve side products from position 5 (Tecan numbering)</span>
+<span class="n">side_products</span> <span class="o">=</span> <span class="n">my_plate</span><span class="o">.</span><span class="n">side_products_from_tecan_position</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">side_product</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">side_product</span> <span class="ow">in</span> <span class="n">side_products</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="collections.html" class="btn btn-neutral float-left" title="Using Collections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../moduleref.html" class="btn btn-neutral float-right" title="Module Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Robert Warden-Rothman, Mark Cerutti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

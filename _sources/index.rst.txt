@@ -1,0 +1,48 @@
+========================
+LabGuruAPI documentation
+========================
+
+.. toctree::
+    :hidden:
+
+    getting_started
+    moduleref
+
+
+.. _introduction:
+
+Introduction
+------------
+The LabGuruAPI package was written to be an interface between Python and `LabGuru's REST API
+<https://my.labguru.com/api-docs/index.html#/>`_. Although a basic API wrapper is provided by LabGuru, it is not object
+oriented and generally hard to use. So... we wrote our own.
+
+The code follows a few basic principles:
+    1. Always use the global :py:data:`~LabGuruAPI._base.SESSION` object. Don't make your own instance of :py:class:`~LabGuruAPI._base.Session`.
+    2. Each collection is represented by a subclass of :py:class:`~LabGuruAPI._collections.Collections`. Collection items are instances of that class.
+    3. The API is queried "lazily". This means that the API will not actually be called until you ask for a specific
+       property of the item. Parent, child, and linked items work the same way.
+    4. Collection items are global singletons. Each API query for the same item returns the same python object. If you
+       edit an instance in one context, you edit it everywhere.
+    5. Changes to an item do not automatically push to/pull from LabGuru. You will need to use the object's
+       :py:meth:`~LabGuruAPI._base.LabGuruItem.lg_sync` method.
+
+Documentation Guide
+-------------------
+
+Getting Started
+    This section will help you install the LabGuruAPI module, review the basics of how :py:data:`~LabGuruAPI._base.SESSION`
+    and :py:class:`~LabGuruAPI._collections.Collections` items work, and introduce you to ELN manipulations.
+
+Examples
+    This section will break down a few bits of code that we've used to do useful things with LabGuru.
+
+Module Reference
+    The nitty-gritty detail of EVERYTHING.
+
+.. caution::
+    LabGuru changes their API without notice. If you start getting new errors or things stop syncing correctly, please
+    notify rob.wr@grobio.com and/or mark.cerutti@grobio.com.
+
+
+* :ref:`genindex`

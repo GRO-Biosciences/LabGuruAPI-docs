@@ -1,0 +1,9 @@
+Search API
+==========
+
+.. automodule:: LabGuruAPI._search_api
+   :members:
+   :member-order: bysource
+
+..
+   :exclude-members:

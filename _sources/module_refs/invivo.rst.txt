@@ -1,0 +1,9 @@
+In Vivo
+===========
+
+.. automodule:: LabGuruAPI._in_vivo
+   :members:
+   :member-order: bysource
+
+..
+   :exclude-members: LGPrimitives, SessionCacheKey, SessionTransaction

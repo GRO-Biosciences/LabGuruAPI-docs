@@ -1,0 +1,10 @@
+Getting Started
+===============
+
+.. toctree::
+    :maxdepth: 1
+
+    getting_started/installation
+    getting_started/session_basics
+    getting_started/collections
+    getting_started/stocks

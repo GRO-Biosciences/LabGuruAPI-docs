@@ -1,0 +1,104 @@
+Installing LabGuruAPI
+=====================
+
+Configuring AWS
+---------------
+
+Making a profile
+^^^^^^^^^^^^^^^^
+You will need an AWS profile to be able to install the LabGuruAPI package from our CodeArtifact repository. If you do
+not have one already, ask `Mark <mark.cerutti@grobio.com>`_ or `Rob <rob.wr@grobio.com>`_ to create one for you. We will
+provide you with a ``credentials.csv`` file once your profile is active.
+
+Installing the AWS Command Line Interface (CLI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. tabs::
+    .. group-tab:: Windows
+        System Requirements:
+            * 64-bit Windows (all GRO computers should be 64-bit)
+            * Admin rights to install software (all GRO users should be able to install software on their computers)
+
+        Process:
+            1. Download and run the `CLI Installer <https://awscli.amazonaws.com/AWSCLIV2.msi>`_ from Amazon.
+            2. To confirm the installation, open the *Start* menu, search for ``cmd`` to open a command prompt window,
+               and at the command prompt use the ``aws --version`` command. Your output should look like:
+
+               .. code-block:: doscon
+
+                    C:\> aws --version
+                    aws-cli/2.11.14 Python/3.11.3 Windows/10 exe/AMD64 prompt/off
+
+    .. group-tab:: macOS
+        System Requirements:
+            * macOS version 10.15 or later
+            * ``sudo`` permissions
+
+        Process:
+            1. Download the installer package.
+
+               .. code-block:: console
+
+                    $ curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+            2. Install the package. The files will be installed to ``/usr/local/aws-cli`` with a symlink created to
+               ``/usr/local/bin``. You must use ``sudo`` to write into those locations.
+
+               .. code-block:: console
+
+                    $ sudo installer -pkg ./AWSCLIV2.pkg -target /
+            3. Verify the location and version of your AWS CLI. The output should look something like this:
+
+               .. code-block:: console
+
+                    $ which aws
+                    /usr/local/bin/aws
+                    $ aws --version
+                    aws-cli/2.19.1 Python/3.11.6 Darwin/23.3.0 botocore/2.4.5
+
+If you encounter problems, please reference the `AWS Troubleshooting Document <https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-troubleshooting.html>`_
+
+Importing your credentials
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open a command prompt window and use the ``aws configure import`` command with the ``--csv`` option to import the
+``credentials.csv`` file `provided by a system admin <Making a profile_>`_
+
+.. tabs::
+    .. group-tab:: Windows
+        Run the following command, replacing ``file://credentials.csv`` with the path to your ``credentials.csv`` file.
+
+            .. code-block:: doscon
+
+                C:\> aws configure import --csv file://credentials.csv
+
+    .. group-tab:: macOS
+        Run the following command, replacing ``path/to/credentials.csv`` with the path to your ``credentials.csv`` file.
+
+            .. code-block:: console
+
+                $ aws configure import --csv path/to/credentials.csv
+
+Getting the package from CodeArtifact
+-------------------------------------
+
+Once you have configured your AWS CLI, you can install the ``LabGuruAPI`` package **almost** as easily as everything else.
+The only difference is that you will need to log in to CodeArtifact and add the code artifact repository to ``pip``.
+Luckily, this can be done in a single command via the AWS CLI. You will remain logged in for 12 hours. The shell command
+is the same for each operating system.
+
+.. code-block::
+
+    aws codeartifact login --tool pip --repository foundry-pypi --domain grobio-foundry --domain-owner 409124030547 --region us-east-2
+
+You can then install ``foundrybackend`` package, which includes the ``LabGuruAPI`` module.
+
+.. code-block::
+
+    pip install foundrybackend
+
+.. note::
+    Running this command will change the default python repository from pypi to CodeArtifact *for your entire system*.
+    To switch back, run the command
+
+    .. code-block:: none
+
+        pip config unset global.index-url

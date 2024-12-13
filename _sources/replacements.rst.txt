@@ -1,0 +1,16 @@
+
+.. |session| replace:: :py:data:`~LabGuruAPI._base.SESSION`
+
+.. |lg_sync| replace:: :py:meth:`~LabGuruAPI._base.LabGuruItem.lg_sync`
+
+.. |lgic| replace:: :py:class:`~LabGuruAPI._base.LabGuruItem`
+
+.. |collections_class| replace:: :py:class:`~LabGuruAPI._collections.Collections`
+
+.. |stock_class| replace:: :py:class:`~LabGuruAPI._inventory.Stock`
+
+.. |plate_class| replace:: :py:class:`~LabGuruAPI._inventory.Plate`
+
+.. |box_class| replace:: :py:class:`~LabGuruAPI._inventory.Box`
+
+.. |plate| replace:: :py:class:`~LabGuruAPI._inventory.Plate`

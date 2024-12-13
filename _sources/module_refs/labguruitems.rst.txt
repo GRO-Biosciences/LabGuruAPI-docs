@@ -1,0 +1,7 @@
+Base
+====
+
+.. automodule:: LabGuruAPI._base
+   :members:
+   :member-order: bysource
+   :exclude-members: LGPrimitives, SessionCacheKey, SessionTransaction

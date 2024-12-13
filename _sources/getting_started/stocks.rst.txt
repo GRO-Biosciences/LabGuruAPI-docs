@@ -1,0 +1,343 @@
+Using Stocks
+============
+
+.. include:: ../replacements.rst
+
+The Basics
+----------
+
+In LabGuru, |stock_class| items represent a physical instantiation of a |collections_class| item. So |stock_class| attributes
+are used to store information like location, concentration, and storage buffer rather than things like genotype or
+molecular weight, which are conceptual properties of every instance of the |collections_class| item. These two concepts
+are linked via the :py:attr:`~LabGuruAPI._inventory.Stock.stockable` attribute.
+
+A |stock_class| object's location is recorded by the :py:attr:`~LabGuruAPI._inventory.Stock.storage` and :py:attr:`~LabGuruAPI._inventory.Stock.location_in_box`
+attributes. It's generally easier to set this through the |plate_class| or |box_class| that the stock will be stored in.
+
+Barcodes
+--------
+
+The :py:attr:`~LabGuruAPI._inventory.Stock.barcode` attribute of a |stock_class| is used to record a barcode that has been printed on the
+tube. LabGuru's API allows for the direct lookup of a stock via its barcode, so in addition to :py:meth:`~LabGuruAPI._base.LabGuruItem.from_name`
+and :py:meth:`~LabGuruAPI._base.LabGuruItem.from_id`, we can use the :py:meth:`~LabGuruAPI._inventory.Stock.from_barcode` method to get a stock from the API.
+
+.. warning::
+
+    By GRO convention, a stock's name in generally the same as it's stockable. This results in many stocks with the same
+    name, making :py:meth:`~LabGuruAPI._base.LabGuruItem.from_name` pretty much useless. Please don't use it unless you know your stock has been
+    given a unique name.
+
+.. warning::
+
+    :py:meth:`~LabGuruAPI._inventory.Stock.from_barcode` will also match a stock's ID if no matching barcode is found (LabGuru implementation,
+    not ours). When designing stock barcodes, please ensure the numbers are large enough to not collide with stock IDs
+    or are alphanumeric.
+
+Concentrations
+--------------
+
+One of the main utilities of the |stock_class| class is recording the stock's concentration. LabGuru records this as two
+separate attributes :py:attr:`~LabGuruAPI._inventory.Stock.concentration` and :py:attr:`~LabGuruAPI._inventory.Stock.concentration_unit_id`. While separating
+these and using a controlled vocabulary for units makes a lot of sense, it also makes concentrations hard to work with.
+So most of the |stock_class| class's code is dedicated to unit conversion.
+
+Available Units
+^^^^^^^^^^^^^^^
++----------+--------------------------------------------------------+
+| Category | Units (unit ID)                                        |
++==========+========================================================+
+| Molarity | M (11), mM (12), µM (13), nM (20)                      |
++----------+--------------------------------------------------------+
+| Molality | mg/mL (9), g/L (10), µg/mL (14), ng/µL (15), g/mL (18) |
++----------+--------------------------------------------------------+
+| Other    | ratio (16), % (17), OD (19)                            |
++----------+--------------------------------------------------------+
+
+Setting Concentration using Stock properties
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The easiest way to set a stock's concentration is to use one of the following properties: :py:attr:`~LabGuruAPI._inventory.Stock.molarity`,
+:py:attr:`~LabGuruAPI._inventory.Stock.micromolarity`, :py:attr:`~LabGuruAPI._inventory.Stock.nanomolarity`, or :py:attr:`~LabGuruAPI._inventory.Stock.ng_ul`.
+Once you set one value, you can retrieve any of the different units. If the object is a subclass of :py:class:`~LabGuruAPI._collections.Weighted`,
+you can even convert between molarity and ng/μL.
+
+.. code-block:: pycon
+
+    >>> from LabGuruAPI import Plasmid
+    >>> p = Plasmid.from_name('pGRO-C1228')
+    >>> s = p.add_stock(p.name, None, update=False)
+    >>> s.molarity = 1.0
+    >>> f'{s.micromolarity:,}'
+    '1,000,000.0'
+    >>> f'{s.nanomolarity:,}'
+    '1,000,000,000.0'
+    >>> f'{s.ng_ul:,}'
+    '3,655,887,400.0'
+
+Setting Concentration using Strings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The |stock_class| class's :py:attr:`~LabGuruAPI._inventory.Stock.concentration_string` property can be used to set or
+retrieve the stock's concentration from a sting. This is usually used to read the concentration from a spreadsheet or
+to display it in a human-readable fashion. If you want it to be easily readable, make sure to set the correct unit.
+
+.. code-block:: pycon
+
+    >>> s.concentration_string
+    '1.00 M'
+    >>> s.concentration_string = '1 mM'
+    >>> s.concentration_string
+    '1.00 mM'
+    >>> f'{s.micromolarity:,}'
+    '1,000.0'
+    >>> s.micromolarity = s.micromolarity
+    >>> s.concentration_string
+    '1000.00 µM'
+
+Setting Concentrations Directly
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can also set the :py:attr:`~LabGuruAPI._inventory.Stock.concentration` and
+:py:attr:`~LabGuruAPI._inventory.Stock.concentration_unit_id`/:py:attr:`~LabGuruAPI._inventory.Stock.concentration_unit_name`
+properties directly. This can be useful if the value and unit are split between spreadsheet columns or if you need a unit
+not covered by the defined properties above.
+
+.. code-block:: pycon
+
+    >>> rows = [{'concentration': 27, 'units': 'ng/μL'}]
+    >>> for row in rows:
+    >>>     s.concentration = row['concentration']
+    >>>     s.concentration_unit_name = row['units']
+    >>> s.ng_ul
+    27.0
+    >>> s.nanomolarity
+    7.385347809125631
+
+Plates and Boxes
+----------------
+
+Stocks' storage locations can be described with the :py:class:`~LabGuruAPI._inventory.Box` and |plate| classes. |plate|
+is a subclass of :py:class:`~LabGuruAPI._inventory.Box` and both are subclasses of :py:class:`~LabGrurAPI._base.HasWells`,
+which provides methods for adding/retrieving stocks and converting between well names, LabGuru well numbering, and
+Tecan well numbering. Example location IDs for a standard 96-well layout in each convention are shown below.
+
++----------------------+----+----+----+----+----+----+
+| Numbering Convention | A1 | B1 | C1 | A2 | A3 | H12|
++======================+====+====+====+====+====+====+
+| By well name (short) | A1 | B1 | C1 | A2 | A3 |H12 |
++----------------------+----+----+----+----+----+----+
+| By well name (long)  | A01| B01| C01| A02| A03|H12 |
++----------------------+----+----+----+----+----+----+
+| By LabGuru position  | 1  | 13 | 25 | 2  | 3  | 96 |
++----------------------+----+----+----+----+----+----+
+| By Tecan position    | 1  | 2  | 3  | 9  | 17 | 96 |
++----------------------+----+----+----+----+----+----+
+
+.. note::
+    The module's code is based on the "LabGuru position" convention. Using methods for another convention simply converts
+    the position to the LabGuru convention and then calls the LabGuru version of the method. So, if there isn't a reason
+    to use well names or Tecan positions, it's faster to use the LabGuru convention.
+
+.. note::
+
+    Both :py:class:`~LabGuruAPI._inventory.Box` and |plate| map to the ``Box`` collection in LabGuru. LabGuru also has
+    a ``Plate`` collection, which are used as part of the ELN and very much not useful for inventory management. Trust us,
+    we tried...
+
+Creating a Plate/Box
+^^^^^^^^^^^^^^^^^^^^
+
+Creating a new |plate| or |box_class| is handled the same way as adding a new |collections_class| item (see :ref:`new_item`).
+The item's size will default to an 8x12 standard 96-well plate. If you want something else, you need to include the
+``rows`` and ``cols`` keywords in the :py:meth:`~LabGuruAPI._basic.LabGuruItem.make_new` call. For instance, if you had
+a new 9x9 box for 1.5/2 mL tubes, you would instantiate it like this:
+
+.. code-block:: py
+
+    new_box = Box.make_new(name='My Next Box', rows=9, cols=9)
+    new_box.lg_sync()
+
+Instead of the ``name`` attribute, |plate| objects should be instantiated with:
+
++-------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| Attribute                                                         | Usage                                                                                                                   |
++===================================================================+=========================================================================================================================+
+| :py:attr:`~LabGuruAPI._inventory.PlateDescriptorMixin.barcode`    | The scannable and/ or human-readable barcode (this will map to ``name``)                                                |
++-------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| :py:attr:`~LabGuruAPI._inventory.PlateDescriptorMixin.label`      | A human-readable description of the plate. It should be written on the physical plate somewhere.                        |
++-------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+| :py:attr:`~LabGuruAPI._inventory.PlateDescriptorMixin.plate_type` | The type of plate you're storing. ie) Bio-Rad 96-well PCR, Echo 384-well PP. It should help someone find it in storage. |
++-------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------+
+
+
+Adding Samples to a Plate
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adding things into wells/positions on a |plate| is easily done with a few helper methods. All of these methods will
+return a |stock_class| object **that has already been synced to LabGuru**. There's no need to run |lg_sync| unless you
+update it further. A table of helper functions by position convention is listed below:
+
++-----------------------+----------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------------------------+
+| Class you want to add | well_name                                                | LabGuru numbering                                            | Tecan numbering                                                    |
++=======================+==========================================================+==============================================================+====================================================================+
+| |stock_class|         | :py:meth:`~LabGuruAPI._base.HasWells.copy_stock_to_well` | :py:meth:`~LabGuruAPI._base.HasWells.copy_stock_to_position` | :py:meth:`~LabGuruAPI._base.HasWells.copy_stock_to_tecan_position` |
++-----------------------+----------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------------------------+
+| |collections_class|   | :py:meth:`~LabGuruAPI._inventory.Box.add_sample_to_well` | :py:meth:`~LabGuruAPI._inventory.Box.add_sample_to_position` | :py:meth:`~LabGuruAPI._inventory.Box.add_sample_to_tecan_position` |
++-----------------------+----------------------------------------------------------+--------------------------------------------------------------+--------------------------------------------------------------------+
+
+Getting Samples from a Plate
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Retrieving samples from a |plate| object can be achieved using various helper methods provided by the API. These methods
+allow you to access samples in specific wells or positions based on the numbering convention you use. Each method will
+return a list of |stock_class| object that represents the samples stored in the respective position. The available helper
+methods are listed in the table below:
+
++-----------------------+--------------------------------------------------------+--------------------------------------------------------------+------------------------------------------------------------------+
+| Position Convention   | Well Name                                              | LabGuru Numbering                                            | Tecan Numbering                                                  |
++=======================+========================================================+==============================================================+==================================================================+
+| Method                | :py:meth:`~LabGuruAPI._base.HasWells.stocks_from_well` | :py:meth:`~LabGuruAPI._base.HasWells.stocks_from_position`   | :py:meth:`~LabGuruAPI._base.HasWells.stocks_from_tecan_position` |
++-----------------------+--------------------------------------------------------+--------------------------------------------------------------+------------------------------------------------------------------+
+
+The example below illustrates how to retrieve a stock object from a specific well in a |plate| using different numbering
+conventions.
+
+.. code-block:: py
+
+    # Retrieve a plate object first
+    my_plate = Plate.from_name('Example Plate')
+
+    # Get a sample using the well name (e.g., A1)
+    stock = my_plate.get_stock_from_well('A1')[0]
+    print(stock.name)
+
+    # Get a sample using LabGuru numbering (e.g., position 1)
+    stock = my_plate.get_stock_from_position(1)[0]
+    print(stock.name)
+
+    # Get a sample using Tecan numbering (e.g., position 2)
+    stock = my_plate.get_stock_from_tecan_position(2)[0]
+    print(stock.name)
+
+Iterating through a Plate
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use the |plate| class's :py:meth:`~LabGuruAPI._base.HasWells.iter_well_names`,
+:py:meth:`~LabGuruAPI._base.HasWells.iter_positions`, and :py:meth:`~LabGuruAPI._base.HasWells.iter_tecan_positions`
+methods to iterate over positions in a plate.
+
+For example, you could use these methods to add a strain to every well of an overnight plate.
+
+.. code-block:: py
+
+    s = Strain.from_name('GRO24-6734')
+    plate = Plate.add_new(barcode='0000-ONC-001', label='3xU Overnight plate', plate_type='2mL Deepwell 96')
+    for pos in plate.iter_positions():
+        plate.add_sample_to_position(s, pos)
+
+You can also use these methods to get plasmids from a transformation plate and generate daughter strains.
+
+.. code-block:: py
+
+    base_strain = Strain.from_name('GRO24-6763')
+    plas_plate = Plate.from_barcode('0000-PLA-003')
+    out_plate = Plate.add_new(barcode='0000-CCT-003', label='pAMF expression transformations', plate_type='Bio-Rad 96-well PCR')
+
+    for pos in plas_plate.iter_positions():
+        stocks = plas_plate.stocks_from_position(pos)[0]
+        if not (stocks and isinstance(stocks[0], Plasmid)):
+            continue
+
+        plas = stocks[0]
+        daughter = base_strain.make_new_derived_strain('next_name', plas.name, additonal_plasmids=plas.name)
+        daughter.lg_sync()
+
+
+Working with Reactions in Plates
+--------------------------------
+
+Each well in a |plate| can only hold 1 stock. This is usually fine in the context of inventory management, but is quite
+limiting when looking at plates that are used in reactions because they have many components we may want to track. To
+enable this type of tracking, we implemented a number of methods that can add a stock to a plate while assigning it a
+reaction role. Those roles are:
+
++--------------+----------------------------------------------------------------------------------------------+
+| Role         | Description                                                                                  |
++==============+==============================================================================================+
+| Reactant     | Collection items that are consumed during the reaction.                                      |
++--------------+----------------------------------------------------------------------------------------------+
+| Product      | The major or desired product of the reaction.                                                |
++--------------+----------------------------------------------------------------------------------------------+
+| Side Product | Other products of the reaction.                                                              |
++--------------+----------------------------------------------------------------------------------------------+
+| Catalyst     | A collection item that aids in the reaction, but is neither consumed nor destroyed (enzymes) |
++--------------+----------------------------------------------------------------------------------------------+
+| Bystander    | A collection item that does not participate in the reaction (buffers)                        |
++--------------+----------------------------------------------------------------------------------------------+
+
+To add reaction components into a |plate|, use the following methods depending on the numbering convention:
+
++---------------+------------------------------------------------------------------+----------------------------------------------------------------------+----------------------------------------------------------------------------+
+| Component     | Well Name                                                        | LabGuru Numbering                                                    | Tecan Numbering                                                            |
++===============+==================================================================+======================================================================+============================================================================+
+| Reactants     | :py:meth:`~LabGuruAPI._inventory.Plate.add_reactant_to_well`     | :py:meth:`~LabGuruAPI._inventory.Plate.add_reactant_to_position`     | :py:meth:`~LabGuruAPI._inventory.Plate.add_reactant_to_tecan_position`     |
++---------------+------------------------------------------------------------------+----------------------------------------------------------------------+----------------------------------------------------------------------------+
+| Products      | :py:meth:`~LabGuruAPI._inventory.Plate.add_product_to_well`      | :py:meth:`~LabGuruAPI._inventory.Plate.add_product_to_position`      | :py:meth:`~LabGuruAPI._inventory.Plate.add_product_to_tecan_position`      |
++---------------+------------------------------------------------------------------+----------------------------------------------------------------------+----------------------------------------------------------------------------+
+| Side Products | :py:meth:`~LabGuruAPI._inventory.Plate.add_side_product_to_well` | :py:meth:`~LabGuruAPI._inventory.Plate.add_side_product_to_position` | :py:meth:`~LabGuruAPI._inventory.Plate.add_side_product_to_tecan_position` |
++---------------+------------------------------------------------------------------+----------------------------------------------------------------------+----------------------------------------------------------------------------+
+| Catalysts     | :py:meth:`~LabGuruAPI._inventory.Plate.add_catalyst_to_well`     | :py:meth:`~LabGuruAPI._inventory.Plate.add_catalyst_to_position`     | :py:meth:`~LabGuruAPI._inventory.Plate.add_catalyst_to_tecan_position`     |
++---------------+------------------------------------------------------------------+----------------------------------------------------------------------+----------------------------------------------------------------------------+
+| Bystanders    | :py:meth:`~LabGuruAPI._inventory.Plate.add_bystander_to_well`    | :py:meth:`~LabGuruAPI._inventory.Plate.add_bystander_to_position`    | :py:meth:`~LabGuruAPI._inventory.Plate.add_bystander_to_tecan_position`    |
++---------------+------------------------------------------------------------------+----------------------------------------------------------------------+----------------------------------------------------------------------------+
+
+Here's an example of how to add reactants, products, and side products using different conventions:
+
+.. code-block:: py
+
+    # Retrieve a plate object first
+    my_plate = Plate.from_name('Example Plate')
+
+    # Add a reactant to well A1
+    my_plate.add_reactant_to_well('A1', reactant_name='Reactant A')
+
+    # Add a product using LabGuru numbering (e.g., position 1)
+    my_plate.add_product_to_position(1, product_name='Product B')
+
+    # Add a side product using Tecan numbering (e.g., position 5)
+    my_plate.add_side_product_to_tecan_position(5, side_product_name='Side Product C')
+
+To retrieve reaction components from wells or positions in a |plate|, use the following helper methods:
+
++---------------+---------------------------------------------------------------------+-------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+| Component     | Well Name                                                           | LabGuru Numbering                                                       | Tecan Numbering                                                               |
++===============+=====================================================================+=========================================================================+===============================================================================+
+| Reactants     | :py:meth:`~LabGuruAPI._inventory.Plate.get_reactants_from_well`     | :py:meth:`~LabGuruAPI._inventory.Plate.get_reactants_from_position`     | :py:meth:`~LabGuruAPI._inventory.Plate.get_reactants_from_tecan_position`     |
++---------------+---------------------------------------------------------------------+-------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+| Products      | :py:meth:`~LabGuruAPI._inventory.Plate.get_products_from_well`      | :py:meth:`~LabGuruAPI._inventory.Plate.get_products_from_position`      | :py:meth:`~LabGuruAPI._inventory.Plate.get_products_from_tecan_position`      |
++---------------+---------------------------------------------------------------------+-------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+| Side Products | :py:meth:`~LabGuruAPI._inventory.Plate.get_side_products_from_well` | :py:meth:`~LabGuruAPI._inventory.Plate.get_side_products_from_position` | :py:meth:`~LabGuruAPI._inventory.Plate.get_side_products_from_tecan_position` |
++---------------+---------------------------------------------------------------------+-------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+| Catalysts     | :py:meth:`~LabGuruAPI._inventory.Plate.get_catalysts_from_well`     | :py:meth:`~LabGuruAPI._inventory.Plate.get_catalysts_from_position`     | :py:meth:`~LabGuruAPI._inventory.Plate.get_catalysts_from_tecan_position`     |
++---------------+---------------------------------------------------------------------+-------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+| Bystanders    | :py:meth:`~LabGuruAPI._inventory.Plate.get_bystanders_from_well`    | :py:meth:`~LabGuruAPI._inventory.Plate.get_bystanders_from_position`    | :py:meth:`~LabGuruAPI._inventory.Plate.get_bystanders_from_tecan_position`    |
++---------------+---------------------------------------------------------------------+-------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+
+Here's an example of how to retrieve reactants, products, and side products using different numbering conventions:
+
+.. code-block:: py
+
+    # Retrieve a plate object first
+    my_plate = Plate.from_name('Example Plate')
+
+    # Retrieve reactants from well A1
+    reactants = my_plate.reactants_from_well('A1')
+    print([reactant.name for reactant in reactants])
+
+    # Retrieve products from position 1 (LabGuru numbering)
+    products = my_plate.products_from_position(1)
+    print([product.name for product in products])
+
+    # Retrieve side products from position 5 (Tecan numbering)
+    side_products = my_plate.side_products_from_tecan_position(5)
+    print([side_product.name for side_product in side_products])

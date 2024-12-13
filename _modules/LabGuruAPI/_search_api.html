@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LabGuruAPI._search_api &mdash; LabGuru API 1.1.31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=485f6e3b"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            LabGuru API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../moduleref.html">Module Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">LabGuru API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">LabGuruAPI._search_api</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for LabGuruAPI._search_api</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">update_wrapper</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="n">LGSearchable</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]</span>
+<span class="n">JSONVal</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;JSONVal&#39;</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;JSONVal&#39;</span><span class="p">]]</span>
+<span class="n">_R</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;_R&#39;</span><span class="p">)</span>
+<span class="n">LGI</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s1">&#39;LGI&#39;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s1">&#39;LabGuruItem&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">LGSearchOperator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lg_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">py_operator</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+                 <span class="n">lg_operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attr_name</span> <span class="o">=</span> <span class="n">attr_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lg_field</span> <span class="o">=</span> <span class="n">lg_field</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lg_operator</span> <span class="o">=</span> <span class="n">lg_operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">py_operator</span> <span class="o">=</span> <span class="n">py_operator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">kendo_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSONVal</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s1">&#39;Yes&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="k">else</span> <span class="s1">&#39;No&#39;</span>
+        <span class="k">elif</span> <span class="s1">&#39;LabGuruItem&#39;</span> <span class="ow">in</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">]:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lg_operator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lg_operator</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">odict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lg_operator</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lg_field</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;null&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lg_operator</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">odict</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">odict</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LGSearchAPI&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LGSearchOperator</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">LGSearchAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">other</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">LGSearchAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot add </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LGSearchAPI&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kendo_filter</span><span class="p">())</span>
+
+
+<span class="k">class</span> <span class="nc">LGSortOperator</span><span class="p">(</span><span class="n">LGSearchOperator</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lg_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">descending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">lg_field</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;sorting&#39;</span><span class="p">,</span> <span class="s1">&#39;desc&#39;</span> <span class="k">if</span> <span class="n">descending</span> <span class="k">else</span> <span class="s1">&#39;asc&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">kendo_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSONVal</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lg_field</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">LGSearchAPI</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">filters</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">LGSearchOperator</span><span class="p">,</span> <span class="n">LGSortOperator</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LGSearchOperator</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sorters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">LGSortOperator</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="n">LGSortOperator</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sorters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">==</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">make_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">JSONVal</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{}</span>
+
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;kendo&quot;</span>    <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;filter&quot;</span>   <span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;logic&quot;</span>  <span class="p">:</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;filters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">f</span><span class="o">.</span><span class="n">kendo_filter</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">[:</span><span class="mi">2</span><span class="p">])}</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;page_size&quot;</span><span class="p">:</span> <span class="n">page_size</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sorters</span><span class="p">:</span>
+            <span class="n">parameters</span><span class="p">[</span><span class="s1">&#39;sort&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="n">f</span><span class="o">.</span><span class="n">kendo_filter</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sorters</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">parameters</span>
+
+    <span class="k">def</span> <span class="nf">continue_filtering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">_R</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">_R</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">results</span>
+
+        <span class="n">out_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">cur_lgi</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">cur_filter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
+                    <span class="k">assert</span> <span class="n">cur_filter</span><span class="o">.</span><span class="n">py_operator</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">cur_lgi</span><span class="p">,</span> <span class="n">cur_filter</span><span class="o">.</span><span class="n">attr_name</span><span class="p">),</span> <span class="n">cur_filter</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">out_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_lgi</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">AssertionError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+                <span class="k">pass</span>
+
+        <span class="k">return</span> <span class="n">out_list</span>
+
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LGSearchAPI&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">other</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LGSortOperator</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sorters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LGSearchOperator</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LGSearchAPI</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">filters</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sorters</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">sorters</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="bp">NotImplemented</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot add </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;LGSearchAPI&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SearchInterface">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface">[docs]</a>
+<span class="k">class</span> <span class="nc">SearchInterface</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an abstract interface for defining search operations and generating search operators.</span>
+
+<span class="sd">    This class provides methods and operator overloads for creating search operations (like comparison,</span>
+<span class="sd">    string containment, null checks, etc.) and constructing corresponding logical expressions using</span>
+<span class="sd">    searchable attributes. It is intended to be used as a base interface for entities requiring advanced</span>
+<span class="sd">    search capabilities.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        labguru_name (str or None): The external name used in the context of Labguru search operations,</span>
+<span class="sd">            or None if not specified. Only used while initializing the searchable object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">private_name</span> <span class="o">=</span> <span class="s1">&#39;_&#39;</span>  <span class="c1">#: :meta private:</span>
+    <span class="n">labguru_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_get_property_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">self_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;private_name&#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="n">self_lg_name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;labguru_name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">self_name</span>
+        <span class="k">return</span> <span class="n">self_lg_name</span><span class="p">,</span> <span class="n">self_name</span>
+
+    <span class="k">def</span> <span class="nf">_make_search_operator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">py_operator</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">):</span>
+        <span class="n">self_lg_name</span><span class="p">,</span> <span class="n">self_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property_names</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">LGSearchOperator</span><span class="p">(</span><span class="n">self_name</span><span class="p">,</span> <span class="n">self_lg_name</span><span class="p">,</span> <span class="n">py_operator</span><span class="p">,</span> <span class="n">operator_str</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SearchInterface.asc">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.asc">[docs]</a>
+    <span class="k">def</span> <span class="nf">asc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represents an ascending sort operation for the given property name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSortOperator: An instance of LGSortOperator representing a sort operation in ascending order.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">self_lg_name</span><span class="p">,</span> <span class="n">self_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property_names</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">LGSortOperator</span><span class="p">(</span><span class="n">self_name</span><span class="p">,</span> <span class="n">self_lg_name</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.desc">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.desc">[docs]</a>
+    <span class="k">def</span> <span class="nf">desc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Represents a descending sort operation for the given property name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSortOperator: An instance of LGSortOperator representing a sort operation in descending order.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">self_lg_name</span><span class="p">,</span> <span class="n">self_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property_names</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">LGSortOperator</span><span class="p">(</span><span class="n">self_name</span><span class="p">,</span> <span class="n">self_lg_name</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.__eq__">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.__eq__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks equality between the current object and another object, returning a</span>
+<span class="sd">        search operator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (LGSearchable | str | bool): The object to compare with the current</span>
+<span class="sd">                `LGSearchable` instance for equality. It can be an instance of</span>
+<span class="sd">                `LGSearchable`, `str`, or `bool`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: An operator indicating the equality condition between</span>
+<span class="sd">                the current object and the provided `other` object.</span>
+
+<span class="sd">        :meta public:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;eq&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">eq</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;_eq&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">eq</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.__ne__">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.__ne__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares the current instance with another value for inequality.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (LGSearchable): The value to compare with the current instance.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: A search operator representing the inequality comparison.</span>
+
+<span class="sd">        :meta public:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;neq&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;_neq&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">ne</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.__le__">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.__le__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares the current object with another object to check if it is less than or</span>
+<span class="sd">        equal to the other object. Generates a logical search operator for this comparison.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (LGSearchable): The object to compare with the current object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: A logical search operator representing the less-than-or-equal-to</span>
+<span class="sd">            comparison.</span>
+
+<span class="sd">        :meta public:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;_lte&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">le</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.__lt__">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.__lt__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares the current object with another object to determine if the current</span>
+<span class="sd">        object is less than the other object. This comparison generates a search</span>
+<span class="sd">        operator encapsulating the comparison logic.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (LGSearchable): The object to compare with the current object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: A search operator representing the less-than comparison.</span>
+
+<span class="sd">        :meta public:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;_lt&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">lt</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.__gt__">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.__gt__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares the current object with another LGSearchable object to determine if the</span>
+<span class="sd">        current object is greater than the other.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other: The LGSearchable object to compare against the current object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: Represents the comparison operation indicating whether</span>
+<span class="sd">            the current object is greater than the provided object.</span>
+
+<span class="sd">        :meta public:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;_gt&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">gt</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.__ge__">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.__ge__">[docs]</a>
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">LGSearchable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares the current instance with another LGSearchable object to determine if the</span>
+<span class="sd">        current instance is greater than or equal to the other.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (LGSearchable): The LGSearchable instance to compare against.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: An operator encapsulating the logical comparison of</span>
+<span class="sd">            greater than or equal.</span>
+
+<span class="sd">        :meta public:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;_gte&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">ge</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.contains">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.contains">[docs]</a>
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates and applies a search operation for containment check.</span>
+
+<span class="sd">        This method creates a search operator based on the specified containment</span>
+<span class="sd">        logic. It uses the &#39;contains&#39; operator to evaluate whether the current</span>
+<span class="sd">        object contains the provided value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other: The value to be checked for containment within the current</span>
+<span class="sd">                object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The result of the search operation as an outcome of containment</span>
+<span class="sd">            verification.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;contains&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">.</span><span class="n">contains</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.not_contains">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.not_contains">[docs]</a>
+    <span class="k">def</span> <span class="nf">not_contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determines whether a value is not contained within another value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other: The value to determine if it is not contained in the target.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A new search operator object configured with the &#39;doesnotcontain&#39;</span>
+<span class="sd">            logic evaluating whether `other` is not contained in the subject.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">_nc</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+            <span class="k">return</span> <span class="ow">not</span> <span class="n">operator</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;doesnotcontain&#39;</span><span class="p">,</span> <span class="n">_nc</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.starts_with">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.starts_with">[docs]</a>
+    <span class="k">def</span> <span class="nf">starts_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a search operator that checks whether the current value starts with</span>
+<span class="sd">        the specified string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (str): The string to check if the current value starts with.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: A search operator for evaluating the condition.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;startswith&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.ends_with">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.ends_with">[docs]</a>
+    <span class="k">def</span> <span class="nf">ends_with</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and returns a search operator to determine if a string ends with a</span>
+<span class="sd">        specified substring.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (str): The substring to check if the string ends with.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: An object representing the search operation for checking</span>
+<span class="sd">            if the string ends with the specified substring.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;endswith&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="n">other</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.is_null">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.is_null">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_null</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the given attribute is null or empty.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: A search operator object for evaluating a &quot;null&quot; or</span>
+<span class="sd">            &quot;empty&quot; condition.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AttributeError: If the attribute `base_type` is not accessible.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;base_type&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;isnullorempty&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">a</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;isnull&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SearchInterface.is_not_null">
+<a class="viewcode-back" href="../../module_refs/search.html#LabGuruAPI._search_api.SearchInterface.is_not_null">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_not_null</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LGSearchOperator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determines whether the value is not null or, in the case of string types, neither null nor empty, and</span>
+<span class="sd">        creates a corresponding search operator.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            LGSearchOperator: A search operator instance that represents the &quot;is not null&quot; check, tailored for</span>
+<span class="sd">            the specific type of the class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;base_type&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;isnotnullorempty&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_search_operator</span><span class="p">(</span><span class="s1">&#39;isnotnull&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">a</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># @class_wrapper</span>
+<span class="k">class</span> <span class="nc">_SearchableProperty</span><span class="p">(</span><span class="nb">property</span><span class="p">,</span> <span class="n">SearchInterface</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fget</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span> <span class="n">fset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span>
+                 <span class="n">fdel</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="o">...</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span> <span class="o">...</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">fget</span><span class="p">,</span> <span class="n">fset</span><span class="p">,</span> <span class="n">fdel</span><span class="p">,</span> <span class="n">doc</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">fget</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">private_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;__name__&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">make_lg_searchable</span><span class="p">(</span><span class="n">prop</span><span class="p">:</span> <span class="nb">property</span><span class="p">,</span> <span class="n">lg_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">prop</span> <span class="o">=</span> <span class="n">_SearchableProperty</span><span class="p">(</span><span class="n">fget</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">fget</span><span class="p">,</span> <span class="n">fset</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">fset</span><span class="p">,</span> <span class="n">fdel</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">fdel</span><span class="p">)</span>
+    <span class="n">prop</span><span class="o">.</span><span class="n">labguru_name</span> <span class="o">=</span> <span class="n">lg_name</span>
+    <span class="k">return</span> <span class="n">prop</span>
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">LabGuruAPI._base</span> <span class="kn">import</span> <span class="n">SESSION</span><span class="p">,</span> <span class="n">LGInt</span>
+    <span class="kn">from</span> <span class="nn">LabGuruAPI._collections</span> <span class="kn">import</span> <span class="n">Plasmid</span>
+    <span class="c1">#</span>
+    <span class="c1"># x = LGSearchOperator(&#39;name&#39;, &#39;name&#39;, operator.contains, &#39;contains&#39;, &#39;pGRO&#39;)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;pGRO&#39;</span><span class="p">)</span>
+    <span class="c1"># y = LGSearchOperator(&#39;clone_no&#39;, &#39;custom3&#39;, operator.contains, &#39;contains&#39;, &#39;-04&#39;)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">clone_no</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;-04&#39;</span><span class="p">)</span>
+    <span class="c1"># z = LGSearchOperator(&#39;clone_no&#39;, &#39;custom3&#39;, operator.contains, &#39;contains&#39;, &#39;GBFP&#39;)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">clone_no</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;GBFP&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Robert Warden-Rothman, Mark Cerutti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

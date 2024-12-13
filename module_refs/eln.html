@@ -1,0 +1,476 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ELN &mdash; LabGuru API 1.1.31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=485f6e3b"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="In Vivo" href="invivo.html" />
+    <link rel="prev" title="Datasets" href="datasets.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LabGuru API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../moduleref.html">Module Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="labguruitems.html">Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datasets.html">Datasets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ELN</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#LabGuruAPI._eln.Element"><code class="docutils literal notranslate"><span class="pre">Element</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Element.class_name"><code class="docutils literal notranslate"><span class="pre">Element.class_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Element.class_display_name"><code class="docutils literal notranslate"><span class="pre">Element.class_display_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Element.element_type"><code class="docutils literal notranslate"><span class="pre">Element.element_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Element.data"><code class="docutils literal notranslate"><span class="pre">Element.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Element.position"><code class="docutils literal notranslate"><span class="pre">Element.position</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Element.format_data"><code class="docutils literal notranslate"><span class="pre">Element.format_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#LabGuruAPI._eln.LGElementList"><code class="docutils literal notranslate"><span class="pre">LGElementList</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.LGElementList.base_type"><code class="docutils literal notranslate"><span class="pre">LGElementList.base_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#LabGuruAPI._eln.Section"><code class="docutils literal notranslate"><span class="pre">Section</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.class_name"><code class="docutils literal notranslate"><span class="pre">Section.class_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.class_display_name"><code class="docutils literal notranslate"><span class="pre">Section.class_display_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.elements"><code class="docutils literal notranslate"><span class="pre">Section.elements</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.collapsed"><code class="docutils literal notranslate"><span class="pre">Section.collapsed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.container_id"><code class="docutils literal notranslate"><span class="pre">Section.container_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.container_type"><code class="docutils literal notranslate"><span class="pre">Section.container_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.parse_api_data"><code class="docutils literal notranslate"><span class="pre">Section.parse_api_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.add_text_element"><code class="docutils literal notranslate"><span class="pre">Section.add_text_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.add_steps_element"><code class="docutils literal notranslate"><span class="pre">Section.add_steps_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.add_plate_element"><code class="docutils literal notranslate"><span class="pre">Section.add_plate_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.add_samples_element"><code class="docutils literal notranslate"><span class="pre">Section.add_samples_element()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.add_stock"><code class="docutils literal notranslate"><span class="pre">Section.add_stock()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.add_stocks"><code class="docutils literal notranslate"><span class="pre">Section.add_stocks()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Section.add_attachments"><code class="docutils literal notranslate"><span class="pre">Section.add_attachments()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#LabGuruAPI._eln.LGSectionList"><code class="docutils literal notranslate"><span class="pre">LGSectionList</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.LGSectionList.base_type"><code class="docutils literal notranslate"><span class="pre">LGSectionList.base_type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#LabGuruAPI._eln.Protocol"><code class="docutils literal notranslate"><span class="pre">Protocol</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Protocol.sections"><code class="docutils literal notranslate"><span class="pre">Protocol.sections</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#LabGuruAPI._eln.Experiment"><code class="docutils literal notranslate"><span class="pre">Experiment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Experiment.class_name"><code class="docutils literal notranslate"><span class="pre">Experiment.class_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Experiment.class_display_name"><code class="docutils literal notranslate"><span class="pre">Experiment.class_display_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Experiment.sections"><code class="docutils literal notranslate"><span class="pre">Experiment.sections</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Experiment.new_from_protocol"><code class="docutils literal notranslate"><span class="pre">Experiment.new_from_protocol()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Experiment.base_id"><code class="docutils literal notranslate"><span class="pre">Experiment.base_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#LabGuruAPI._eln.Experiment.add_section"><code class="docutils literal notranslate"><span class="pre">Experiment.add_section()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="invivo.html">In Vivo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inventory.html">Inventory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="search.html">Search API</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LabGuru API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../moduleref.html">Module Reference</a></li>
+      <li class="breadcrumb-item active">ELN</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/module_refs/eln.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-LabGuruAPI._eln">
+<span id="eln"></span><h1>ELN<a class="headerlink" href="#module-LabGuruAPI._eln" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Element">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruAPI._eln.</span></span><span class="sig-name descname"><span class="pre">Element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Element" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Element.class_name">
+<span class="sig-name descname"><span class="pre">class_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Element'</span></em><a class="headerlink" href="#LabGuruAPI._eln.Element.class_name" title="Link to this definition"></a></dt>
+<dd><p>The programmatic class name for the LG API</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Element.class_display_name">
+<span class="sig-name descname"><span class="pre">class_display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Experiments'</span></em><a class="headerlink" href="#LabGuruAPI._eln.Element.class_display_name" title="Link to this definition"></a></dt>
+<dd><p>The human-readable class name for the LG API</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Element.element_type">
+<span class="sig-name descname"><span class="pre">element_type</span></span><a class="headerlink" href="#LabGuruAPI._eln.Element.element_type" title="Link to this definition"></a></dt>
+<dd><p>equipment/sample/text/steps/plate/excel</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Element.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#LabGuruAPI._eln.Element.data" title="Link to this definition"></a></dt>
+<dd><p>The element’s data. Will vary depending on the type</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Element.position">
+<span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#LabGuruAPI._eln.Element.position" title="Link to this definition"></a></dt>
+<dd><p>The element’s position within a section</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Element.format_data">
+<span class="sig-name descname"><span class="pre">format_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Element.format_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Element.format_data" title="Link to this definition"></a></dt>
+<dd><p>Used to replace values in templated text with actual values for an experiment. Template text is contained in
+Foundry protocols and denoted by double curly brackets.</p>
+<p class="rubric">Example</p>
+<p>Let’s say that protocol #27 has an element containing the text:
+Transfer {{move_vol}} μL of {{reagent}} into the tube.
+It would be replaced in a function like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protocol</span> <span class="o">=</span> <span class="n">Protocol</span><span class="o">.</span><span class="n">from_id</span><span class="p">(</span><span class="mi">27</span><span class="p">)</span>
+<span class="n">current_experiment_text</span> <span class="o">=</span> <span class="n">protocol</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">format_data</span><span class="p">(</span><span class="n">move_vol</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">reagent</span><span class="o">=</span><span class="s1">&#39;water&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">current_experiment_text</span><span class="p">)</span>
+
+<span class="c1"># Result</span>
+<span class="c1"># Transfer 33 μL of water into the tube.</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kwargs</strong></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the formatted text</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.LGElementList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruAPI._eln.</span></span><span class="sig-name descname"><span class="pre">LGElementList</span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#LGElementList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.LGElementList" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.LGElementList.base_type">
+<span class="sig-name descname"><span class="pre">base_type</span></span><a class="headerlink" href="#LabGuruAPI._eln.LGElementList.base_type" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#LabGuruAPI._eln.Element" title="LabGuruAPI._eln.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruAPI._eln.</span></span><span class="sig-name descname"><span class="pre">Section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.class_name">
+<span class="sig-name descname"><span class="pre">class_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ExperimentProcedure'</span></em><a class="headerlink" href="#LabGuruAPI._eln.Section.class_name" title="Link to this definition"></a></dt>
+<dd><p>The programmatic class name for the LG API</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.class_display_name">
+<span class="sig-name descname"><span class="pre">class_display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Sections'</span></em><a class="headerlink" href="#LabGuruAPI._eln.Section.class_display_name" title="Link to this definition"></a></dt>
+<dd><p>The human-readable class name for the LG API</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.elements">
+<span class="sig-name descname"><span class="pre">elements</span></span><a class="headerlink" href="#LabGuruAPI._eln.Section.elements" title="Link to this definition"></a></dt>
+<dd><p>A list of elements contained in the section</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.collapsed">
+<span class="sig-name descname"><span class="pre">collapsed</span></span><a class="headerlink" href="#LabGuruAPI._eln.Section.collapsed" title="Link to this definition"></a></dt>
+<dd><p>True if the section should be collapsed</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.container_id">
+<span class="sig-name descname"><span class="pre">container_id</span></span><a class="headerlink" href="#LabGuruAPI._eln.Section.container_id" title="Link to this definition"></a></dt>
+<dd><p>ID of the container experiment/protocol</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.container_type">
+<span class="sig-name descname"><span class="pre">container_type</span></span><a class="headerlink" href="#LabGuruAPI._eln.Section.container_type" title="Link to this definition"></a></dt>
+<dd><p>the type of the container - Projects::Experiment, Knowledgebase::Protocol, Knowledgebase::Report</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.parse_api_data">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_api_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">json_data:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any],</span> <span class="pre">session:</span> <span class="pre">Session</span> <span class="pre">=</span> <span class="pre">&lt;LabGuruAPI._base.Session</span> <span class="pre">object&gt;,</span> <span class="pre">include_custom=False</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Section" title="LabGuruAPI._eln.Section"><span class="pre">Section</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.parse_api_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.parse_api_data" title="Link to this definition"></a></dt>
+<dd><p>Generates a python object from the LabGuru API’s JSON response. This is a low-level function that should
+not be used routinely.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>json_data</strong> – the JSON dictionary read from the API</p></li>
+<li><p><strong>session</strong> – the active LG session. Please leave as the default value.</p></li>
+<li><p><strong>include_custom</strong> – add the LG “custom###” fields to LGI.other_properties. Default: false</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the python version of the LG object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.add_text_element">
+<span class="sig-name descname"><span class="pre">add_text_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Element" title="LabGuruAPI._eln.Element"><span class="pre">Element</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.add_text_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.add_text_element" title="Link to this definition"></a></dt>
+<dd><p>Adds a “text” element to the end of the current section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>html</strong> – The HTML that will be displayed by the element</p></li>
+<li><p><strong>name</strong> – Optional value. Will only appear in a link.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the new element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.add_steps_element">
+<span class="sig-name descname"><span class="pre">add_steps_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">html</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Element" title="LabGuruAPI._eln.Element"><span class="pre">Element</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.add_steps_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.add_steps_element" title="Link to this definition"></a></dt>
+<dd><p>Add a “steps” element</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.add_plate_element">
+<span class="sig-name descname"><span class="pre">add_plate_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="inventory.html#LabGuruAPI._inventory.Plate" title="LabGuruAPI._inventory.Plate"><span class="pre">Plate</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">add_stocks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Element" title="LabGuruAPI._eln.Element"><span class="pre">Element</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.add_plate_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.add_plate_element" title="Link to this definition"></a></dt>
+<dd><p>Add a plate element to a section. Actual LG plates are awful to work with, so this actually creates a “text”
+element and adds the platemap via an HTML table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>plate</strong> – the Plate object that will be displayed as a map</p></li>
+<li><p><strong>add_stocks</strong> – if True, add the plate’s stocks as samples to the section</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the text element</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.add_samples_element">
+<span class="sig-name descname"><span class="pre">add_samples_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Sample</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><span class="pre">Collections</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Element" title="LabGuruAPI._eln.Element"><span class="pre">Element</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.add_samples_element"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.add_samples_element" title="Link to this definition"></a></dt>
+<dd><p>Adds a “samples” element. Can be initialized with a list of samples to add.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.add_stock">
+<span class="sig-name descname"><span class="pre">add_stock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><span class="pre">Stock</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.add_stock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.add_stock" title="Link to this definition"></a></dt>
+<dd><p>Adds a <cite>Stock</cite> to the section’s sample element. Will create an element if it does not exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.add_stocks">
+<span class="sig-name descname"><span class="pre">add_stocks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><span class="pre">Stock</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.add_stocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.add_stocks" title="Link to this definition"></a></dt>
+<dd><p>Adds a list of <cite>Stock</cite> items to the section’s sample element. Will create an element if it does not exist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Section.add_attachments">
+<span class="sig-name descname"><span class="pre">add_attachments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">CSVRobofile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">att_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Element" title="LabGuruAPI._eln.Element"><span class="pre">Element</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Section.add_attachments"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Section.add_attachments" title="Link to this definition"></a></dt>
+<dd><p>Adds one or many files to an attachment element in the section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>paths</strong> – Paths to files to upload (Path or str). Can also add CSVRobofile objects, which will render as a
+csv</p></li>
+<li><p><strong>att_id</strong> – The ID of an existing attachment element. One will be created if this is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the attachment element</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.LGSectionList">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruAPI._eln.</span></span><span class="sig-name descname"><span class="pre">LGSectionList</span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#LGSectionList"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.LGSectionList" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.LGSectionList.base_type">
+<span class="sig-name descname"><span class="pre">base_type</span></span><a class="headerlink" href="#LabGuruAPI._eln.LGSectionList.base_type" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#LabGuruAPI._eln.Section" title="LabGuruAPI._eln.Section"><code class="xref py py-class docutils literal notranslate"><span class="pre">Section</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Protocol">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruAPI._eln.</span></span><span class="sig-name descname"><span class="pre">Protocol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Protocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Protocol" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Protocol.sections">
+<span class="sig-name descname"><span class="pre">sections</span></span><a class="headerlink" href="#LabGuruAPI._eln.Protocol.sections" title="Link to this definition"></a></dt>
+<dd><p>A list of sections contained in the protocol</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Experiment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruAPI._eln.</span></span><span class="sig-name descname"><span class="pre">Experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Experiment" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Experiment.class_name">
+<span class="sig-name descname"><span class="pre">class_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Projects::Experiment'</span></em><a class="headerlink" href="#LabGuruAPI._eln.Experiment.class_name" title="Link to this definition"></a></dt>
+<dd><p>The programmatic class name for the LG API</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Experiment.class_display_name">
+<span class="sig-name descname"><span class="pre">class_display_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Experiments'</span></em><a class="headerlink" href="#LabGuruAPI._eln.Experiment.class_display_name" title="Link to this definition"></a></dt>
+<dd><p>The human-readable class name for the LG API</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Experiment.sections">
+<span class="sig-name descname"><span class="pre">sections</span></span><a class="headerlink" href="#LabGuruAPI._eln.Experiment.sections" title="Link to this definition"></a></dt>
+<dd><p>A list of Sections contained in the experiment</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Experiment.new_from_protocol">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">new_from_protocol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">protocol_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">18</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">milestone_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">38</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Experiment" title="LabGuruAPI._eln.Experiment"><span class="pre">Experiment</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Experiment.new_from_protocol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Experiment.new_from_protocol" title="Link to this definition"></a></dt>
+<dd><p>Creates a new LabGuru experiment from the specified protocol and appends the experiment ID to the beginning
+of the experiment’s title.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title</strong> – A string representing the title of the experiment.</p></li>
+<li><p><strong>protocol_id</strong> – An integer representing the ID of the protocol associated with the experiment.</p></li>
+<li><p><strong>project_id</strong> – An optional integer representing the ID of the project the experiment belongs to.
+Default is 18 for the “Foundry” project.</p></li>
+<li><p><strong>milestone_id</strong> – An optional integer representing the ID of the milestone the experiment belongs to.
+Default is 38 for the “Requests” folder.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the Experiment class.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – </p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<p>experiment = Experiment.new_from_protocol(title=”Experiment 1”, protocol_id=1234)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Experiment.base_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">base_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#LabGuruAPI._eln.Experiment.base_id" title="Link to this definition"></a></dt>
+<dd><p>ID of this experiment’s base experiment (converts the first 4 characters of the expt name into an int)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="LabGuruAPI._eln.Experiment.add_section">
+<span class="sig-name descname"><span class="pre">add_section</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#LabGuruAPI._eln.Section" title="LabGuruAPI._eln.Section"><span class="pre">Section</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_eln.html#Experiment.add_section"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#LabGuruAPI._eln.Experiment.add_section" title="Link to this definition"></a></dt>
+<dd><p>Adds a new section to the experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> – The title of the new section</p></li>
+<li><p><strong>position</strong> – Where the new section should be located on the page. -1 will put it at the end, but above “Results”</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the newly created section</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="datasets.html" class="btn btn-neutral float-left" title="Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="invivo.html" class="btn btn-neutral float-right" title="In Vivo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Robert Warden-Rothman, Mark Cerutti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

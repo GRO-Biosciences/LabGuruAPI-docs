@@ -1,0 +1,13 @@
+Module Reference
+================
+
+.. toctree::
+    :maxdepth: 1
+
+    module_refs/labguruitems
+    module_refs/collections
+    module_refs/datasets
+    module_refs/eln
+    module_refs/invivo
+    module_refs/inventory
+    module_refs/search

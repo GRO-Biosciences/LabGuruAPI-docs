@@ -1,0 +1,453 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using Collections &mdash; LabGuru API 1.1.31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=485f6e3b"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using Stocks" href="stocks.html" />
+    <link rel="prev" title="SESSION Basics" href="session_basics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LabGuru API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../getting_started.html">Getting Started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="installation.html">Installing LabGuruAPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="session_basics.html"><code class="docutils literal notranslate"><span class="pre">SESSION</span></code> Basics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Using Collections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-an-item-from-labguru">Getting an item from LabGuru</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searching-for-items">Searching for Items</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-new-items">Adding New Items</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#new-python-object">1. New Python Object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#make-new">2. make_new()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#add-new">3. add_new()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#make-new-copy">4. make_new_copy()</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#updating-items">Updating Items</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linking-items">Linking Items</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-stocks">Working with stocks</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="stocks.html">Using Stocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../moduleref.html">Module Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LabGuru API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../getting_started.html">Getting Started</a></li>
+      <li class="breadcrumb-item active">Using Collections</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/collections.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-collections">
+<h1>Using Collections<a class="headerlink" href="#using-collections" title="Link to this heading"></a></h1>
+<p>Most of your interaction with LabGuru will probably be adding and editing items in the various LIMS collections. All of
+our current sample collections are represented in this module as a subclass of <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a>. <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a>
+is itself a subclass of <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem" title="LabGuruAPI._base.LabGuruItem"><code class="xref py py-class docutils literal notranslate"><span class="pre">LabGuruItem</span></code></a>, which provides helpful functions that <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> has in common with ELN and
+storage classes.</p>
+<p>Current Collections:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Collections</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DNA</p></td>
+<td><p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid" title="LabGuruAPI._collections.Plasmid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plasmid</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Oligo" title="LabGuruAPI._collections.Oligo"><code class="xref py py-class docutils literal notranslate"><span class="pre">Oligo</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.SyntheticGene" title="LabGuruAPI._collections.SyntheticGene"><code class="xref py py-class docutils literal notranslate"><span class="pre">SyntheticGene</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Amplicon" title="LabGuruAPI._collections.Amplicon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Amplicon</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.GeneticPart" title="LabGuruAPI._collections.GeneticPart"><code class="xref py py-class docutils literal notranslate"><span class="pre">GeneticPart</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Bacterial</p></td>
+<td><p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Strain" title="LabGuruAPI._collections.Strain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strain</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.AnchorStrain" title="LabGuruAPI._collections.AnchorStrain"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnchorStrain</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Purification</p></td>
+<td><p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.BiomassPellet" title="LabGuruAPI._collections.BiomassPellet"><code class="xref py py-class docutils literal notranslate"><span class="pre">BiomassPellet</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.InclusionBody" title="LabGuruAPI._collections.InclusionBody"><code class="xref py py-class docutils literal notranslate"><span class="pre">InclusionBody</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Reagents</p></td>
+<td><p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Compound" title="LabGuruAPI._collections.Compound"><code class="xref py py-class docutils literal notranslate"><span class="pre">Compound</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Consumable" title="LabGuruAPI._collections.Consumable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Consumable</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Selections</p></td>
+<td><p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Library" title="LabGuruAPI._collections.Library"><code class="xref py py-class docutils literal notranslate"><span class="pre">Library</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Selection" title="LabGuruAPI._collections.Selection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Selection</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><em>in vivo</em></p></td>
+<td><p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.RodentStrain" title="LabGuruAPI._collections.RodentStrain"><code class="xref py py-class docutils literal notranslate"><span class="pre">RodentStrain</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Rodent" title="LabGuruAPI._collections.Rodent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rodent</span></code></a>, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Tissue" title="LabGuruAPI._collections.Tissue"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tissue</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+<p>For the rest of this page, we will (mostly) use <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid" title="LabGuruAPI._collections.Plasmid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plasmid</span></code></a> in our examples to make things more
+concrete, but <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid" title="LabGuruAPI._collections.Plasmid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plasmid</span></code></a> in the code below can be replaced with any of the classes
+above. Just make sure to look at their attributes, as <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid" title="LabGuruAPI._collections.Plasmid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plasmid</span></code></a> attributes won’t
+always correspond to the other collections.</p>
+<section id="getting-an-item-from-labguru">
+<h2>Getting an item from LabGuru<a class="headerlink" href="#getting-an-item-from-labguru" title="Link to this heading"></a></h2>
+<p>Most of the time, you will be retrieving collection items from LabGuru by the item’s name or id number. The
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_name" title="LabGuruAPI._base.LabGuruItem.from_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_name()</span></code></a> and <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_id" title="LabGuruAPI._base.LabGuruItem.from_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_id()</span></code></a> methods are
+the best way to do that.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruItem.</span></span><span class="sig-name descname"><span class="pre">from_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LGI" title="LabGuruAPI._base.LGI"><span class="pre">LGI</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_base.html#LabGuruItem.from_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieves a <code class="docutils literal notranslate"><span class="pre">LabGuruItem</span></code> from the API via its name.</p>
+<p class="rubric">Examples</p>
+<p>Get plasmid <code class="docutils literal notranslate"><span class="pre">pGRO-S0081</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;pGRO-S0081&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> – The exact name of the desired item</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested <code class="docutils literal notranslate"><span class="pre">LabGuruItem</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruItem.</span></span><span class="sig-name descname"><span class="pre">from_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LGI" title="LabGuruAPI._base.LGI"><span class="pre">LGI</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_base.html#LabGuruItem.from_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieves a <code class="docutils literal notranslate"><span class="pre">LabGuruItem</span></code> from the API via its ID number.</p>
+<p class="rubric">Examples</p>
+<p>Get plasmid <code class="docutils literal notranslate"><span class="pre">pGRO-S0081</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_id</span><span class="p">(</span><span class="mi">294</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item_id</strong> – The database id of the desired item</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested <code class="docutils literal notranslate"><span class="pre">LabGuruItem</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Collection classes provide a few other ways of getting specific items from the API. These are combined into a single method:
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_LG" title="LabGuruAPI._base.LabGuruItem.from_LG"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_LG()</span></code></a>. <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_name" title="LabGuruAPI._base.LabGuruItem.from_name"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_name()</span></code></a> and
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.from_id" title="LabGuruAPI._base.LabGuruItem.from_id"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_id()</span></code></a> are actually just calls to this function.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">LabGuruItem.</span></span><span class="sig-name descname"><span class="pre">from_LG</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">api_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_custom</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proxy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LGI" title="LabGuruAPI._base.LGI"><span class="pre">LGI</span></a></span></span><a class="reference internal" href="../_modules/LabGuruAPI/_base.html#LabGuruItem.from_LG"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Retrieves a <code class="docutils literal notranslate"><span class="pre">LabGuruItem</span></code> from the API. Only 1 of the following parameters will be queried, in the following
+order: item_id, name, uuid, auto_name.</p>
+<p>Note: This should only be used if <code class="docutils literal notranslate"><span class="pre">LabGuruItem.from_name</span></code> or <code class="docutils literal notranslate"><span class="pre">LabGuruItem.from_id</span></code> is insufficient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item_id</strong> – The database id of the desired item</p></li>
+<li><p><strong>name</strong> – The name of the desired item</p></li>
+<li><p><strong>uuid</strong> – The uuid of the desired item</p></li>
+<li><p><strong>api_url</strong> – The API URL of the desired item</p></li>
+<li><p><strong>auto_name</strong> – The SysID of the desired item</p></li>
+<li><p><strong>include_custom</strong> – If true, include the ~200 “custom###” fields returned by the api. Default: False</p></li>
+<li><p><strong>from_cache</strong> – If false, forces an API call even if the object is cached. Default: True</p></li>
+<li><p><strong>proxy</strong> – If true, returns a proxy object with lazy API calls. Default: True</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The requested <code class="docutils literal notranslate"><span class="pre">LabGuruItem</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="searching-for-items">
+<h2>Searching for Items<a class="headerlink" href="#searching-for-items" title="Link to this heading"></a></h2>
+<p>Collection attributes (and most properties) utilize the <code class="xref py py-class docutils literal notranslate"><span class="pre">SearchInterface</span></code> protocol.
+The protocol overrides the standard comparison operators (<code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">!=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>) and adds a few
+extra comparison functions
+(<code class="xref py py-meth docutils literal notranslate"><span class="pre">contains()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">not_contains()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">starts_with()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ends_with()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">is_null()</span></code>,
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">is_not_null()</span></code>).
+These can be used in conjunction with <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.find_one" title="LabGuruAPI._base.LabGuruItem.find_one"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_one()</span></code></a> and
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.find_all" title="LabGuruAPI._base.LabGuruItem.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> to search the LabGuru database for items matching your criteria.
+In addition, the <code class="xref py py-meth docutils literal notranslate"><span class="pre">asc()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">desc()</span></code>
+methods allow you to sort the results.</p>
+<p>Let’s look at some examples:</p>
+<blockquote>
+<div><p>Finding all pGRO plasmids that were generated as part of experiment 818:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">Plasmid</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">starts_with</span><span class="p">(</span><span class="s1">&#39;pGRO&#39;</span><span class="p">),</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">clone_no</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;-0818-&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Finding all strains that express Uox25 variants:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">Strain</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">Strain</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;uox25&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Finding all plasmids that can express Uox16 with at least 3 NSAA codons:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">Plasmid</span><span class="o">.</span><span class="n">genotype</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;uox16&#39;</span><span class="p">),</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">u_count</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Find the largest biomass pellet from GRO20-1895 that was grown in TB:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">s</span> <span class="o">=</span> <span class="n">Strain</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;GRO20-1895&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">BiomassPellet</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span>
+    <span class="n">BiomassPellet</span><span class="o">.</span><span class="n">parent_strain</span> <span class="o">==</span> <span class="n">s</span><span class="p">,</span>
+    <span class="n">BiomassPellet</span><span class="o">.</span><span class="n">media_type</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;TB&#39;</span><span class="p">),</span>
+    <span class="n">BiomassPellet</span><span class="o">.</span><span class="n">pellet_weight</span><span class="o">.</span><span class="n">desc</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can provide <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.find_one" title="LabGuruAPI._base.LabGuruItem.find_one"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_one()</span></code></a> and <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.find_all" title="LabGuruAPI._base.LabGuruItem.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a>
+with as many filters as you like, but only the first 2 can be sent to LabGuru (their limit, not ours). The remaining
+filters will be applied programmatically before returning the result(s).</p>
+<p>If you’ve ever tried filtering a collection table on the LabGuru website with 3 or more criteria and wonder why it
+isn’t working correctly, this is why.</p>
+</div>
+</section>
+<section id="adding-new-items">
+<span id="new-item"></span><h2>Adding New Items<a class="headerlink" href="#adding-new-items" title="Link to this heading"></a></h2>
+<p>There are a few ways that you can create new collection items. We’ll go over them now.</p>
+<section id="new-python-object">
+<h3>1. New Python Object<a class="headerlink" href="#new-python-object" title="Link to this heading"></a></h3>
+<p>The go-to method for object generation in Python works here, too. Just make a new instance and start setting properties.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">pla</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="p">()</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;pGRO-C0000&#39;</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;Fake GFP 1xU example plasmid&#39;</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="s1">&#39;p15A&#39;</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">resistance</span> <span class="o">=</span> <span class="s1">&#39;cat&#39;</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">insert</span> <span class="o">=</span> <span class="s1">&#39;GFP_Y123U&#39;</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">promoter</span> <span class="o">=</span> <span class="s1">&#39;P.T7&#39;</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">genotype</span> <span class="o">=</span> <span class="s1">&#39;p15A-(P.T7:GFP_Y123U)&#39;</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">u_count</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">some_sequence_object</span>
+</pre></div>
+</div>
+<p>This will make a new plasmid object, but it will not add it to LIMS yet. You will need to use the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.lg_sync" title="LabGuruAPI._base.LabGuruItem.lg_sync"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lg_sync()</span></code></a>
+method for that. When using <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.lg_sync" title="LabGuruAPI._base.LabGuruItem.lg_sync"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lg_sync()</span></code></a> to add a new item, the API’s response will populate the
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.id" title="LabGuruAPI._base.LabGuruItem.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> attribute, along with any default values.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">lg_sync</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;12345&#39;</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Note that the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.id" title="LabGuruAPI._base.LabGuruItem.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> attribute is a <em>string</em>, not an <em>int</em>. This is because
+the web API needs it to be a string at times and an integer at others. Calls to the API return the id as a string,
+so that’s what we went with for the attribute class. If you need <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.id" title="LabGuruAPI._base.LabGuruItem.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a> to be an
+integer in your code, make sure to convert it using <code class="code highlight pycode py docutils literal highlight-py"><span class="nb">int</span><span class="p">(</span><span class="n">pla</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></code>.</p>
+</div>
+</section>
+<section id="make-new">
+<h3>2. make_new()<a class="headerlink" href="#make-new" title="Link to this heading"></a></h3>
+<p>Method 1 works just fine, but it’s kinda long. To make this more concise (and loadable via dictionary), we implemented
+the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.make_new" title="LabGuruAPI._base.LabGuruItem.make_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_new()</span></code></a> method. It’s a class method that takes all of the function’s
+attributes as keyword arguments. So the code above becomes:</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">pla</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">make_new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;pGRO-C0000&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Fake GFP 1xU example plasmid&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;p15A&#39;</span><span class="p">,</span>
+                       <span class="n">resistance</span><span class="o">=</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="n">insert</span><span class="o">=</span><span class="s1">&#39;GFP_Y123U&#39;</span><span class="p">,</span> <span class="n">promoter</span><span class="o">=</span><span class="s1">&#39;P.T7&#39;</span><span class="p">,</span> <span class="n">genotype</span><span class="o">=</span><span class="s1">&#39;p15A-(P.T7:GFP_Y123U)&#39;</span><span class="p">,</span>
+                       <span class="n">u_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sequence</span><span class="o">=</span><span class="n">some_sequence_object</span><span class="p">)</span>
+<span class="n">pla</span><span class="o">.</span><span class="n">lg_sync</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="add-new">
+<h3>3. add_new()<a class="headerlink" href="#add-new" title="Link to this heading"></a></h3>
+<p>And if 2 lines is still too many, you can use <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.add_new" title="LabGuruAPI._base.LabGuruItem.add_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_new()</span></code></a>. This will automatically
+sync it with LabGuru and return the synced object.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">pla</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">add_new</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;pGRO-C0000&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;Fake GFP 1xU example plasmid&#39;</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;p15A&#39;</span><span class="p">,</span>
+                      <span class="n">resistance</span><span class="o">=</span><span class="s1">&#39;cat&#39;</span><span class="p">,</span> <span class="n">insert</span><span class="o">=</span><span class="s1">&#39;GFP_Y123U&#39;</span><span class="p">,</span> <span class="n">promoter</span><span class="o">=</span><span class="s1">&#39;P.T7&#39;</span><span class="p">,</span> <span class="n">genotype</span><span class="o">=</span><span class="s1">&#39;p15A-(P.T7:GFP_Y123U)&#39;</span><span class="p">,</span>
+                      <span class="n">u_count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sequence</span><span class="o">=</span><span class="n">some_sequence_object</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="make-new-copy">
+<h3>4. make_new_copy()<a class="headerlink" href="#make-new-copy" title="Link to this heading"></a></h3>
+<p>Sometimes you need to duplicate an object, but as we mentioned in the <a class="reference internal" href="../index.html#introduction"><span class="std std-ref">Introduction</span></a>, we want each collection item to be
+a singleton. So when we make a copy, we don’t want the new item to conflict with/overwrite the original. This is where
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.make_new_copy" title="LabGuruAPI._base.LabGuruItem.make_new_copy"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_new_copy()</span></code></a> comes in. This method will re-initialzie all of the attributes
+used to cache the original object (<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.id" title="LabGuruAPI._base.LabGuruItem.id"><code class="xref py py-attr docutils literal notranslate"><span class="pre">id</span></code></a>, <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.name" title="LabGuruAPI._base.LabGuruItem.name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">name</span></code></a>,
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.uuid" title="LabGuruAPI._base.LabGuruItem.uuid"><code class="xref py py-attr docutils literal notranslate"><span class="pre">uuid</span></code></a>, <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.auto_name" title="LabGuruAPI._base.LabGuruItem.auto_name"><code class="xref py py-attr docutils literal notranslate"><span class="pre">auto_name</span></code></a>,
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.api_url" title="LabGuruAPI._base.LabGuruItem.api_url"><code class="xref py py-attr docutils literal notranslate"><span class="pre">api_url</span></code></a>), but leave all of the other properties intact.</p>
+</section>
+</section>
+<section id="updating-items">
+<h2>Updating Items<a class="headerlink" href="#updating-items" title="Link to this heading"></a></h2>
+<p>Updating items is easy. Change any property you want and run an <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.lg_sync" title="LabGuruAPI._base.LabGuruItem.lg_sync"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lg_sync()</span></code></a>.</p>
+<p>Say we realized that pGRO-C0000 is actually spec resistant:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;pGRO-C0000&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span>
+<span class="go">&lt;Plasmid 12345: pGRO-C0000&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;pGRO-S0000&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">resistance</span> <span class="o">=</span> <span class="s1">&#39;spec&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">lg_sync</span><span class="p">()</span>
+<span class="go">&lt;Plasmid 12345: pGRO-S0000&gt;</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Renaming an item, especially a <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Plasmid" title="LabGuruAPI._collections.Plasmid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plasmid</span></code></a> or <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Strain" title="LabGuruAPI._collections.Strain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strain</span></code></a>,
+can have impacts on the properties of other items in disparate collections (stock names, genotypes, etc.).
+<a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> has a special method to handle these instances:
+<a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections.rename" title="LabGuruAPI._collections.Collections.rename"><code class="xref py py-class docutils literal notranslate"><span class="pre">rename</span></code></a>. Since it will touch many samples and needs to stay as in
+sync as possible, <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections.rename" title="LabGuruAPI._collections.Collections.rename"><code class="xref py py-class docutils literal notranslate"><span class="pre">rename</span></code></a> <strong>will be executed by the API immediately.</strong></p>
+<p>So make sure you use <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections.rename" title="LabGuruAPI._collections.Collections.rename"><code class="xref py py-class docutils literal notranslate"><span class="pre">rename</span></code></a> if that’s the goal, but be careful. A lot
+changes and there’s no reverting (other than another <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections.rename" title="LabGuruAPI._collections.Collections.rename"><code class="xref py py-class docutils literal notranslate"><span class="pre">rename</span></code></a> call…)</p>
+</div>
+<p>Similar to <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.make_new" title="LabGuruAPI._base.LabGuruItem.make_new"><code class="xref py py-meth docutils literal notranslate"><span class="pre">make_new()</span></code></a>, the <code class="xref py py-meth docutils literal notranslate"><span class="pre">bulk_update()</span></code>
+method can be used to update many attributes via keyword arguments/dictionary unpacking:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;pGRO-C0000&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span>
+<span class="go">&lt;Plasmid 12345: pGRO-C0000&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_props</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;pGRO-S0000&#39;</span><span class="p">,</span> <span class="s1">&#39;resistance&#39;</span><span class="p">:</span> <span class="s1">&#39;spec&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">bulk_update</span><span class="p">(</span><span class="o">**</span><span class="n">new_props</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla</span><span class="o">.</span><span class="n">lg_sync</span><span class="p">()</span>
+<span class="go">&lt;Plasmid 12345: pGRO-S0000&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="linking-items">
+<h2>Linking Items<a class="headerlink" href="#linking-items" title="Link to this heading"></a></h2>
+<p>Sometimes it is useful to add a bi-directional link between two collection items to help the user navigate between related
+items on the LabGuru website. The links show up in a sidebar or footer depending on the item.</p>
+<figure class="align-default" id="id1">
+<img alt="../_images/linked_resources.png" src="../_images/linked_resources.png" />
+<figcaption>
+<p><span class="caption-text"><a class="reference external" href="https://help.labguru.com/en/articles/1492355-networking-your-research-links-tags-and-more">https://help.labguru.com/en/articles/1492355-networking-your-research-links-tags-and-more</a></span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>To link an item to another, simply call the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.link_to" title="LabGuruAPI._base.LabGuruItem.link_to"><code class="xref py py-meth docutils literal notranslate"><span class="pre">link_to()</span></code></a> method. Linking will be done
+immediately and does not require a call to <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.lg_sync" title="LabGuruAPI._base.LabGuruItem.lg_sync"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lg_sync()</span></code></a>.</p>
+<div class="highlight-py notranslate"><div class="highlight"><pre><span></span><span class="n">pla1</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;Plasmid 1&#39;</span><span class="p">)</span>
+<span class="n">pla2</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;Plasmid 2&#39;</span><span class="p">)</span>
+<span class="n">pla1</span><span class="o">.</span><span class="n">link_to</span><span class="p">(</span><span class="n">pla2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To retrieve linked items, call the <a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.get_linked_items" title="LabGuruAPI._base.LabGuruItem.get_linked_items"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_linked_items()</span></code></a> method. The required <code class="docutils literal notranslate"><span class="pre">of_type</span></code> argument limits the
+response to items from a particular collection.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pla1</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;Plasmid 1&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pla1</span><span class="o">.</span><span class="n">get_linked_items</span><span class="p">(</span><span class="n">Plasmid</span><span class="p">)</span>
+<span class="go">[&lt;Plasmid 00002: Plasmid 2&gt;]</span>
+</pre></div>
+</div>
+<p>Collections can also be linked via parent-child relationships. An item’s parents are recorded as one of the item’s
+attributes (such as the <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Strain" title="LabGuruAPI._collections.Strain"><code class="xref py py-class docutils literal notranslate"><span class="pre">Strain</span></code></a> class’s <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Strain.parent_strain" title="LabGuruAPI._collections.Strain.parent_strain"><code class="xref py py-attr docutils literal notranslate"><span class="pre">parent_strain</span></code></a> and
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">anchor_strain</span></code> attributes). An item’s children can be retrieved via the
+<a class="reference internal" href="../module_refs/labguruitems.html#LabGuruAPI._base.LabGuruItem.get_derived_items" title="LabGuruAPI._base.LabGuruItem.get_derived_items"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_derived_items()</span></code></a> method. It also has an <code class="docutils literal notranslate"><span class="pre">of_type</span></code> argument that determines the type of child that
+will be returned.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">s</span> <span class="o">=</span> <span class="n">Strain</span><span class="o">.</span><span class="n">from_id</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">parent_strain</span>
+<span class="go">&lt;Strain 1: Base Strain&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">get_derived_items</span><span class="p">(</span><span class="n">Strain</span><span class="p">)</span>
+<span class="go">[&lt;Strain 3: First Daughter Strain&gt;, &lt;Strain 4: Second Daughter Strain&gt;, ...]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">anchor_strain</span>
+<span class="go">&lt;Anchor Strain 1: MG1655&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">parent_strain</span><span class="o">.</span><span class="n">anchor_strain</span>
+<span class="go">&lt;Anchor Strain 1: MG1655&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s</span><span class="o">.</span><span class="n">anchor_strain</span><span class="o">.</span><span class="n">get_derived_items</span><span class="p">(</span><span class="n">Strain</span><span class="p">)</span>
+<span class="go">[&lt;Strain 1: Base Strain&gt;, &lt;Strain 2: Main Strain&gt;, &lt;Strain 3: First Daughter Strain&gt;, ...]</span>
+</pre></div>
+</div>
+</section>
+<section id="working-with-stocks">
+<h2>Working with stocks<a class="headerlink" href="#working-with-stocks" title="Link to this heading"></a></h2>
+<p><a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> items are meant to be purely conceptual. They may or may not actually exist. We use <a class="reference internal" href="../module_refs/inventory.html#LabGuruAPI._inventory.Stock" title="LabGuruAPI._inventory.Stock"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stock</span></code></a>
+items represent physical instances of <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections" title="LabGuruAPI._collections.Collections"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collections</span></code></a> items.</p>
+<p>To create a stock, we use the <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections.add_stock" title="LabGuruAPI._collections.Collections.add_stock"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_stock()</span></code></a> method.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_id</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plate</span> <span class="o">=</span> <span class="n">Plate</span><span class="o">.</span><span class="n">from_name</span><span class="p">(</span><span class="s1">&#39;PLA-0000&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">add_stock</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">plate</span><span class="p">,</span> <span class="n">well</span><span class="o">=</span><span class="s1">&#39;A1&#39;</span><span class="p">)</span>
+<span class="go">&lt;Plasmid Stock 98765: pGRO-S0000&gt;</span>
+</pre></div>
+</div>
+<p>To find an item’s stocks, use the <a class="reference internal" href="../module_refs/collections.html#LabGuruAPI._collections.Collections.get_stocks" title="LabGuruAPI._collections.Collections.get_stocks"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_stocks()</span></code></a> method.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Plasmid</span><span class="o">.</span><span class="n">from_id</span><span class="p">(</span><span class="mi">12345</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">get_stocks</span><span class="p">()</span>
+<span class="go">[&lt;Plasmid Stock 98765: pGRO-S0000&gt;]</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="session_basics.html" class="btn btn-neutral float-left" title="SESSION Basics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="stocks.html" class="btn btn-neutral float-right" title="Using Stocks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Robert Warden-Rothman, Mark Cerutti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

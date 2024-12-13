@@ -1,0 +1,9 @@
+Inventory
+===========
+
+.. automodule:: LabGuruAPI._inventory
+   :members:
+   :member-order: bysource
+
+..
+   :exclude-members:

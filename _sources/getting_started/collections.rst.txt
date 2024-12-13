@@ -1,0 +1,307 @@
+Using Collections
+=================
+
+.. include:: ../replacements.rst
+
+Most of your interaction with LabGuru will probably be adding and editing items in the various LIMS collections. All of
+our current sample collections are represented in this module as a subclass of |collections_class|. |collections_class|
+is itself a subclass of |lgic|, which provides helpful functions that |collections_class| has in common with ELN and
+storage classes.
+
+Current Collections:
+
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Category     | Collections                                                                                                                                                                                                                                  |
++==============+==============================================================================================================================================================================================================================================+
+| DNA          | :py:class:`~LabGuruAPI._collections.Plasmid`, :py:class:`~LabGuruAPI._collections.Oligo`, :py:class:`~LabGuruAPI._collections.SyntheticGene`, :py:class:`~LabGuruAPI._collections.Amplicon`, :py:class:`~LabGuruAPI._collections.GeneticPart`|
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Bacterial    | :py:class:`~LabGuruAPI._collections.Strain`, :py:class:`~LabGuruAPI._collections.AnchorStrain`                                                                                                                                               |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Purification | :py:class:`~LabGuruAPI._collections.BiomassPellet`, :py:class:`~LabGuruAPI._collections.InclusionBody`                                                                                                                                       |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Reagents     | :py:class:`~LabGuruAPI._collections.Compound`, :py:class:`~LabGuruAPI._collections.Consumable`                                                                                                                                               |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Selections   | :py:class:`~LabGuruAPI._collections.Library`, :py:class:`~LabGuruAPI._collections.Selection`                                                                                                                                                 |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| *in vivo*    | :py:class:`~LabGuruAPI._collections.RodentStrain`, :py:class:`~LabGuruAPI._collections.Rodent`, :py:class:`~LabGuruAPI._collections.Tissue`                                                                                                  |
++--------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+For the rest of this page, we will (mostly) use :py:class:`~LabGuruAPI._collections.Plasmid` in our examples to make things more
+concrete, but :py:class:`~LabGuruAPI._collections.Plasmid` in the code below can be replaced with any of the classes
+above. Just make sure to look at their attributes, as :py:class:`~LabGuruAPI._collections.Plasmid` attributes won't
+always correspond to the other collections.
+
+Getting an item from LabGuru
+----------------------------
+
+Most of the time, you will be retrieving collection items from LabGuru by the item's name or id number. The
+:py:meth:`~LabGuruAPI._base.LabGuruItem.from_name` and :py:meth:`~LabGuruAPI._base.LabGuruItem.from_id` methods are
+the best way to do that.
+
+.. automethod:: LabGuruAPI._base.LabGuruItem.from_name
+    :no-index:
+
+.. automethod:: LabGuruAPI._base.LabGuruItem.from_id
+    :no-index:
+
+Collection classes provide a few other ways of getting specific items from the API. These are combined into a single method:
+:py:meth:`~LabGuruAPI._base.LabGuruItem.from_LG`. :py:meth:`~LabGuruAPI._base.LabGuruItem.from_name` and
+:py:meth:`~LabGuruAPI._base.LabGuruItem.from_id` are actually just calls to this function.
+
+.. automethod:: LabGuruAPI._base.LabGuruItem.from_LG
+    :no-index:
+
+Searching for Items
+-------------------
+
+Collection attributes (and most properties) utilize the :py:class:`~LabGuruAPI_search_api.SearchInterface` protocol.
+The protocol overrides the standard comparison operators (``=``, ``!=``, ``>``, ``>=``, ``<``, ``<=``) and adds a few
+extra comparison functions
+(:py:meth:`~LabGuruAPI_search_api.SearchInterface.contains`,
+:py:meth:`~LabGuruAPI_search_api.SearchInterface.not_contains`,
+:py:meth:`~LabGuruAPI_search_api.SearchInterface.starts_with`,
+:py:meth:`~LabGuruAPI_search_api.SearchInterface.ends_with`,
+:py:meth:`~LabGuruAPI_search_api.SearchInterface.is_null`,
+:py:meth:`~LabGuruAPI_search_api.SearchInterface.is_not_null`).
+These can be used in conjunction with :py:meth:`~LabGuruAPI._base.LabGuruItem.find_one` and
+:py:meth:`~LabGuruAPI._base.LabGuruItem.find_all` to search the LabGuru database for items matching your criteria.
+In addition, the :py:meth:`~LabGuruAPI_search_api.SearchInterface.asc` and :py:meth:`~LabGuruAPI_search_api.SearchInterface.desc`
+methods allow you to sort the results.
+
+Let's look at some examples:
+
+    Finding all pGRO plasmids that were generated as part of experiment 818:
+
+    .. code-block:: py
+
+        results = Plasmid.find_all(Plasmid.name.starts_with('pGRO'), Plasmid.clone_no.contains('-0818-'))
+
+    Finding all strains that express Uox25 variants:
+
+    .. code-block:: py
+
+        results = Strain.find_all(Strain.genotype.contains('uox25'))
+
+
+    Finding all plasmids that can express Uox16 with at least 3 NSAA codons:
+
+    .. code-block:: py
+
+        results = Plasmid.find_all(Plasmid.genotype.contains('uox16'), Plasmid.u_count >= 3)
+
+    Find the largest biomass pellet from GRO20-1895 that was grown in TB:
+
+    .. code-block:: py
+
+        s = Strain.from_name('GRO20-1895')
+        result = BiomassPellet.find_one(
+            BiomassPellet.parent_strain == s,
+            BiomassPellet.media_type.contains('TB'),
+            BiomassPellet.pellet_weight.desc()
+        )
+
+.. note::
+
+    You can provide :py:meth:`~LabGuruAPI._base.LabGuruItem.find_one` and :py:meth:`~LabGuruAPI._base.LabGuruItem.find_all`
+    with as many filters as you like, but only the first 2 can be sent to LabGuru (their limit, not ours). The remaining
+    filters will be applied programmatically before returning the result(s).
+
+    If you've ever tried filtering a collection table on the LabGuru website with 3 or more criteria and wonder why it
+    isn't working correctly, this is why.
+
+.. _new_item:
+
+Adding New Items
+----------------
+
+There are a few ways that you can create new collection items. We'll go over them now.
+
+1. New Python Object
+^^^^^^^^^^^^^^^^^^^^
+
+The go-to method for object generation in Python works here, too. Just make a new instance and start setting properties.
+
+.. code-block:: py
+
+    pla = Plasmid()
+    pla.name = 'pGRO-C0000'
+    pla.description = 'Fake GFP 1xU example plasmid'
+    pla.origin = 'p15A'
+    pla.resistance = 'cat'
+    pla.insert = 'GFP_Y123U'
+    pla.promoter = 'P.T7'
+    pla.genotype = 'p15A-(P.T7:GFP_Y123U)'
+    pla.u_count = 1
+    pla.sequence = some_sequence_object
+
+This will make a new plasmid object, but it will not add it to LIMS yet. You will need to use the |lg_sync|
+method for that. When using |lg_sync| to add a new item, the API's response will populate the 
+:py:attr:`~LabGuruAPI._base.LabGuruItem.id` attribute, along with any default values.
+
+.. code-block:: pycon
+
+    >>> pla.id
+    ''
+    >>> pla.lg_sync()
+    >>> pla.id
+    '12345'
+
+.. role:: pycode(code)
+    :language: py
+
+.. attention::
+
+    Note that the :py:attr:`~LabGuruAPI._base.LabGuruItem.id` attribute is a *string*, not an *int*. This is because
+    the web API needs it to be a string at times and an integer at others. Calls to the API return the id as a string,
+    so that's what we went with for the attribute class. If you need :py:attr:`~LabGuruAPI._base.LabGuruItem.id` to be an
+    integer in your code, make sure to convert it using :pycode:`int(pla.id)`.
+
+2. make_new()
+^^^^^^^^^^^^^
+
+Method 1 works just fine, but it's kinda long. To make this more concise (and loadable via dictionary), we implemented
+the :py:meth:`~LabGuruAPI._base.LabGuruItem.make_new` method. It's a class method that takes all of the function's
+attributes as keyword arguments. So the code above becomes:
+
+.. code-block:: py
+
+    pla = Plasmid.make_new(name='pGRO-C0000', description='Fake GFP 1xU example plasmid', origin='p15A',
+                           resistance='cat', insert='GFP_Y123U', promoter='P.T7', genotype='p15A-(P.T7:GFP_Y123U)',
+                           u_count=1, sequence=some_sequence_object)
+    pla.lg_sync()
+
+3. add_new()
+^^^^^^^^^^^^
+
+And if 2 lines is still too many, you can use :py:meth:`~LabGuruAPI._base.LabGuruItem.add_new`. This will automatically
+sync it with LabGuru and return the synced object.
+
+.. code-block:: py
+
+    pla = Plasmid.add_new(name='pGRO-C0000', description='Fake GFP 1xU example plasmid', origin='p15A',
+                          resistance='cat', insert='GFP_Y123U', promoter='P.T7', genotype='p15A-(P.T7:GFP_Y123U)',
+                          u_count=1, sequence=some_sequence_object)
+
+4. make_new_copy()
+^^^^^^^^^^^^^^^^^^
+
+Sometimes you need to duplicate an object, but as we mentioned in the :ref:`introduction`, we want each collection item to be
+a singleton. So when we make a copy, we don't want the new item to conflict with/overwrite the original. This is where
+:py:meth:`~LabGuruAPI._base.LabGuruItem.make_new_copy` comes in. This method will re-initialzie all of the attributes
+used to cache the original object (:py:attr:`~LabGuruAPI._base.LabGuruItem.id`, :py:attr:`~LabGuruAPI._base.LabGuruItem.name`,
+:py:attr:`~LabGuruAPI._base.LabGuruItem.uuid`, :py:attr:`~LabGuruAPI._base.LabGuruItem.auto_name`,
+:py:attr:`~LabGuruAPI._base.LabGuruItem.api_url`), but leave all of the other properties intact.
+
+Updating Items
+--------------
+
+Updating items is easy. Change any property you want and run an |lg_sync|.
+
+Say we realized that pGRO-C0000 is actually spec resistant:
+
+.. code-block:: pycon
+
+    >>> pla = Plasmid.from_name('pGRO-C0000')
+    >>> pla
+    <Plasmid 12345: pGRO-C0000>
+    >>> pla.name = 'pGRO-S0000'
+    >>> pla.resistance = 'spec'
+    >>> pla.lg_sync()
+    <Plasmid 12345: pGRO-S0000>
+
+.. caution::
+
+    Renaming an item, especially a :py:class:`~LabGuruAPI._collections.Plasmid` or :py:class:`~LabGuruAPI._collections.Strain`,
+    can have impacts on the properties of other items in disparate collections (stock names, genotypes, etc.).
+    |collections_class| has a special method to handle these instances:
+    :py:class:`~LabGuruAPI._collections.Collections.rename`. Since it will touch many samples and needs to stay as in
+    sync as possible, :py:class:`~LabGuruAPI._collections.Collections.rename` **will be executed by the API immediately.**
+
+    So make sure you use :py:class:`~LabGuruAPI._collections.Collections.rename` if that's the goal, but be careful. A lot
+    changes and there's no reverting (other than another :py:class:`~LabGuruAPI._collections.Collections.rename` call...)
+
+
+Similar to :py:meth:`~LabGuruAPI._base.LabGuruItem.make_new`, the :py:meth:`~LabGuruAPI._base.LabGuruItem.bulk_update`
+method can be used to update many attributes via keyword arguments/dictionary unpacking:
+
+.. code-block:: pycon
+
+    >>> pla = Plasmid.from_name('pGRO-C0000')
+    >>> pla
+    <Plasmid 12345: pGRO-C0000>
+    >>> new_props = {'name': 'pGRO-S0000', 'resistance': 'spec'}
+    >>> pla.bulk_update(**new_props)
+    >>> pla.lg_sync()
+    <Plasmid 12345: pGRO-S0000>
+
+Linking Items
+-------------
+
+Sometimes it is useful to add a bi-directional link between two collection items to help the user navigate between related
+items on the LabGuru website. The links show up in a sidebar or footer depending on the item.
+
+.. figure:: ../_static/images/linked_resources.png
+
+    https://help.labguru.com/en/articles/1492355-networking-your-research-links-tags-and-more
+
+To link an item to another, simply call the :py:meth:`~LabGuruAPI._base.LabGuruItem.link_to` method. Linking will be done
+immediately and does not require a call to |lg_sync|.
+
+.. code-block:: py
+
+    pla1 = Plasmid.from_name('Plasmid 1')
+    pla2 = Plasmid.from_name('Plasmid 2')
+    pla1.link_to(pla2)
+
+To retrieve linked items, call the :py:meth:`~LabGuruAPI._base.LabGuruItem.get_linked_items` method. The required ``of_type`` argument limits the
+response to items from a particular collection.
+
+.. code-block:: pycon
+
+    >>> pla1 = Plasmid.from_name('Plasmid 1')
+    >>> pla1.get_linked_items(Plasmid)
+    [<Plasmid 00002: Plasmid 2>]
+
+Collections can also be linked via parent-child relationships. An item's parents are recorded as one of the item's
+attributes (such as the :py:class:`~LabGuruAPI._collections.Strain` class's :py:attr:`~LabGuruAPI._collections.Strain.parent_strain` and
+:py:attr:`~LabGuruAPI._collections.Strain.anchor_strain` attributes). An item's children can be retrieved via the
+:py:meth:`~LabGuruAPI._base.LabGuruItem.get_derived_items` method. It also has an ``of_type`` argument that determines the type of child that
+will be returned.
+
+.. code-block:: pycon
+
+    >>> s = Strain.from_id(2)
+    >>> s.parent_strain
+    <Strain 1: Base Strain>
+    >>> s.get_derived_items(Strain)
+    [<Strain 3: First Daughter Strain>, <Strain 4: Second Daughter Strain>, ...]
+    >>> s.anchor_strain
+    <Anchor Strain 1: MG1655>
+    >>> s.parent_strain.anchor_strain
+    <Anchor Strain 1: MG1655>
+    >>> s.anchor_strain.get_derived_items(Strain)
+    [<Strain 1: Base Strain>, <Strain 2: Main Strain>, <Strain 3: First Daughter Strain>, ...]
+
+Working with stocks
+-------------------
+
+|collections_class| items are meant to be purely conceptual. They may or may not actually exist. We use |stock_class|
+items represent physical instances of |collections_class| items.
+
+To create a stock, we use the :py:meth:`~LabGuruAPI._collections.Collections.add_stock` method.
+
+.. code-block:: pycon
+
+    >>> p = Plasmid.from_id(12345)
+    >>> plate = Plate.from_name('PLA-0000')
+    >>> p.add_stock(p.name, plate, well='A1')
+    <Plasmid Stock 98765: pGRO-S0000>
+
+
+To find an item's stocks, use the :py:meth:`~LabGuruAPI._collections.Collections.get_stocks` method.
+
+.. code-block:: pycon
+
+    >>> p = Plasmid.from_id(12345)
+    >>> p.get_stocks()
+    [<Plasmid Stock 98765: pGRO-S0000>]

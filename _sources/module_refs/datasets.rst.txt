@@ -1,0 +1,9 @@
+Datasets
+===========
+
+.. automodule:: LabGuruAPI._datasets
+   :members:
+   :member-order: bysource
+
+..
+   :exclude-members: LGPrimitives, SessionCacheKey, SessionTransaction

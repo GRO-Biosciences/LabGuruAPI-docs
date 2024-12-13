@@ -1,0 +1,156 @@
+``SESSION`` Basics
+==================
+
+The |session| object handles all data exchange between Python and LabGuru. It will be configured and run any time you
+import it:
+
+.. |session| replace:: :py:data:`~LabGuruAPI._base.SESSION`
+
+.. code-block:: python
+
+    from LabGuruAPI import SESSION
+
+It is also used by a number of search and convenience functions in the :py:class:`~LabGuruAPI._base.LabGuruItem` and
+:py:class:`~LabGuruAPI._collections.Collections` classes.
+
+Logging in
+----------
+
+The first time you import |session| or run a method that interacts with the LabGuru API, you will be asked to log in
+with your LabGuru name and password. You can also force a login with the :py:meth:`~LabGuruAPI._base.Session.login`
+method.
+
+.. code-block:: pycon
+
+    >>> from LabGuruAPI import SESSION
+    >>> SESSION.login()
+    Please Login to LabGuru
+    Username: first.last@grobio.com
+    Password: DontUseThis4Real
+
+.. caution::
+    Your password will be visible on the screen!
+
+The |session| object will then send your credentials to LabGuru and get a token that can be used for 1 month.
+
+If you have previously logged in, the |session| object will check if your token is still valid. If it is not, you will
+be asked to provide your credentials again. (We may reduce the output to only the first line at some point in the future.)
+
+
+.. code-block:: pycon
+
+    >>> from LabGuruAPI import SESSION
+    >>> SESSION.login()
+    Trying token abcdefghijklmnopqrstuvwxyz123456789ABCDE
+    200
+    'abcdefghijklmnopqrstuvwxyz123456789ABCDE'
+
+
+Config Management
+-----------------
+
+|session| can also be used to interact with a local configuration file. This will allow you to store simple strings
+(like the auth token) and reuse them between scripts.
+
+Storing a value
+^^^^^^^^^^^^^^^
+
+You can store a value for later using the ``SESSION.set_config_value()`` method.
+
+.. automethod:: LabGuruAPI._base.Session.set_config_value
+    :no-index:
+
+
+Retrieving a value
+^^^^^^^^^^^^^^^^^^
+
+You can retrieve a previously stored value using the ``SESSION.get_config_value()`` method.
+
+.. automethod:: LabGuruAPI._base.Session.get_config_value
+    :no-index:
+
+Example Usage
+^^^^^^^^^^^^^
+In the :py:class:`~LabGuruAPI._collections.Plasmid` class, config values are used for setting the
+:py:attr:`~LabGuruAPI._collections.Plasmid.origin` property. Our LIMS structure limits the value of
+:py:attr:`~LabGuruAPI._collections.Plasmid.origin` to a specific list of options. If a user attempts to set
+:py:attr:`~LabGuruAPI._collections.Plasmid.origin` to a different value, it needs to be substituted for one of the
+valid options. The setter method presents the user with the list of options, and prompts them to choose the correct one.
+This is useful, but would get tedious if you had a long list of plasmids with the same incorrect origin name. You can
+expect to see the name again in future projects, as well. So the setter method uses the config file to map the incorrect
+origin names to allowed ones.
+
+Let's say you're adding a plasmid with the ``'p15A'`` origin. On the input spreadsheet, though, the plasmid is listed as
+``'pA15'``.
+
+.. code-block:: pycon
+
+    >>> plasmid.origin = 'pA15'
+
+This is not a valid option, but before asking the user what they meant, we check to see if we've seen this typo before.
+
+.. code-block:: pycon
+
+    >>> SESSION.get_config_value('ORIGINS', 'pA15', ask=False)
+    'p15A'
+
+Great! We've seen this before and can set it to the correct value. But if we hadn't...
+
+.. code-block:: pycon
+
+    >>> SESSION.get_config_value('ORIGINS', 'pA15', ask=False)
+    KeyError: 'pA15'
+
+In this case, the method would prompt the user to choose the correct value from a list. We'll then store it for next
+time.
+
+.. code-block:: pycon
+
+    >>> good_val = prompt(...)  # user selects p15A
+    >>> SESSION.set_config_value('ORIGINS', 'pA15', good_val)
+
+Generic API Interactions
+------------------------
+
+HTTP Request Methods
+^^^^^^^^^^^^^^^^^^^^
+
+SESSION provides the :py:meth:`~LabGuruAPI._base.Session.get`, :py:meth:`~LabGuruAPI._base.Session.post`,
+:py:meth:`~LabGuruAPI._base.Session.put`, and :py:meth:`~LabGuruAPI._base.Session.del_request` methods to interact with
+any API endpoints that are not built into a corresponding :py:class:`~LabGuruAPI._base.LabGuruItem` object.
+
+.. automethod:: LabGuruAPI._base.Session.get
+    :no-index:
+
+
+Example Usage
+^^^^^^^^^^^^^
+
+This package does not provide a class for interacting with LabGuru's Equipment collection, but the API does. If, for
+some reason, you wanted to list all of the equipment in company, you could make a ``HTTP GET`` call to the
+``api/v1/instruments`` endpoint. You will need to add the endpoint as the full string, or the part after ``api/v1/``.
+
+.. code-block:: pycon
+
+    >>> SESSION.get('instruments')
+    {'items':[{... instrument 1 ...}, {... instrument 2 ...}, ...]}
+
+If the call is successful, it will return a dictionary corresponding to the parsed JSON result. If the call is
+unsuccessful, it will return ``None``.
+
+You can also pass arguments to the methods, which will be included as JSON in the request body. Say you wanted to add
+a new type of experiment flag. Looking at the `API documentation <https://my.labguru.com/api-docs/index.html#/Flags/post_api_v1_flags>`_,
+you will need to provide a JSON string with the ``'item'`` key, which is a dictionary of the new flag's properties.
+
+.. code-block:: pycon
+
+    >>> new_flag = dict(title='Needs Review', icon='question', color='orange-light', description='Please review this!')
+    >>> SESSION.post('flags', item=new_flag)
+    {'flag': {'id': 3, 'title': 'Needs Review', ...}}
+
+For all of the request types, your current active authorization token will be added in the appropriate location.
+
+
+
+
+

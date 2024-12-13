@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installing LabGuruAPI &mdash; LabGuru API 1.1.31 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=485f6e3b"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=6dbb43f8"></script>
+      <script src="../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SESSION Basics" href="session_basics.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            LabGuru API
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../getting_started.html">Getting Started</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Installing LabGuruAPI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-aws">Configuring AWS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#making-a-profile">Making a profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installing-the-aws-command-line-interface-cli">Installing the AWS Command Line Interface (CLI)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#importing-your-credentials">Importing your credentials</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-the-package-from-codeartifact">Getting the package from CodeArtifact</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="session_basics.html"><code class="docutils literal notranslate"><span class="pre">SESSION</span></code> Basics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="collections.html">Using Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stocks.html">Using Stocks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../moduleref.html">Module Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">LabGuru API</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../getting_started.html">Getting Started</a></li>
+      <li class="breadcrumb-item active">Installing LabGuruAPI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/getting_started/installation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="installing-labguruapi">
+<h1>Installing LabGuruAPI<a class="headerlink" href="#installing-labguruapi" title="Link to this heading"></a></h1>
+<section id="configuring-aws">
+<h2>Configuring AWS<a class="headerlink" href="#configuring-aws" title="Link to this heading"></a></h2>
+<section id="making-a-profile">
+<h3>Making a profile<a class="headerlink" href="#making-a-profile" title="Link to this heading"></a></h3>
+<p>You will need an AWS profile to be able to install the LabGuruAPI package from our CodeArtifact repository. If you do
+not have one already, ask <a class="reference external" href="mailto:mark&#46;cerutti&#37;&#52;&#48;grobio&#46;com">Mark</a> or <a class="reference external" href="mailto:rob&#46;wr&#37;&#52;&#48;grobio&#46;com">Rob</a> to create one for you. We will
+provide you with a <code class="docutils literal notranslate"><span class="pre">credentials.csv</span></code> file once your profile is active.</p>
+</section>
+<section id="installing-the-aws-command-line-interface-cli">
+<h3>Installing the AWS Command Line Interface (CLI)<a class="headerlink" href="#installing-the-aws-command-line-interface-cli" title="Link to this heading"></a></h3>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-V2luZG93cw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="0">Windows</button><button aria-controls="panel-0-bWFjT1M=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-bWFjT1M=" name="bWFjT1M=" role="tab" tabindex="-1">macOS</button></div><div aria-labelledby="tab-0-V2luZG93cw==" class="sphinx-tabs-panel group-tab" id="panel-0-V2luZG93cw==" name="V2luZG93cw==" role="tabpanel" tabindex="0"><dl>
+<dt>System Requirements:</dt><dd><ul class="simple">
+<li><p>64-bit Windows (all GRO computers should be 64-bit)</p></li>
+<li><p>Admin rights to install software (all GRO users should be able to install software on their computers)</p></li>
+</ul>
+</dd>
+<dt>Process:</dt><dd><ol class="arabic">
+<li><p>Download and run the <a class="reference external" href="https://awscli.amazonaws.com/AWSCLIV2.msi">CLI Installer</a> from Amazon.</p></li>
+<li><p>To confirm the installation, open the <em>Start</em> menu, search for <code class="docutils literal notranslate"><span class="pre">cmd</span></code> to open a command prompt window,
+and at the command prompt use the <code class="docutils literal notranslate"><span class="pre">aws</span> <span class="pre">--version</span></code> command. Your output should look like:</p>
+<div class="highlight-doscon notranslate"><div class="highlight"><pre><span></span><span class="gp">C:\&gt;</span> aws --version
+<span class="go">aws-cli/2.11.14 Python/3.11.3 Windows/10 exe/AMD64 prompt/off</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</dd>
+</dl>
+</div><div aria-labelledby="tab-0-bWFjT1M=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-bWFjT1M=" name="bWFjT1M=" role="tabpanel" tabindex="0"><dl>
+<dt>System Requirements:</dt><dd><ul class="simple">
+<li><p>macOS version 10.15 or later</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sudo</span></code> permissions</p></li>
+</ul>
+</dd>
+<dt>Process:</dt><dd><ol class="arabic">
+<li><p>Download the installer package.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span><span class="s2">&quot;https://awscli.amazonaws.com/AWSCLIV2.pkg&quot;</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">&quot;AWSCLIV2.pkg&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Install the package. The files will be installed to <code class="docutils literal notranslate"><span class="pre">/usr/local/aws-cli</span></code> with a symlink created to
+<code class="docutils literal notranslate"><span class="pre">/usr/local/bin</span></code>. You must use <code class="docutils literal notranslate"><span class="pre">sudo</span></code> to write into those locations.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo<span class="w"> </span>installer<span class="w"> </span>-pkg<span class="w"> </span>./AWSCLIV2.pkg<span class="w"> </span>-target<span class="w"> </span>/
+</pre></div>
+</div>
+</li>
+<li><p>Verify the location and version of your AWS CLI. The output should look something like this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>which<span class="w"> </span>aws
+<span class="go">/usr/local/bin/aws</span>
+<span class="gp">$ </span>aws<span class="w"> </span>--version
+<span class="go">aws-cli/2.19.1 Python/3.11.6 Darwin/23.3.0 botocore/2.4.5</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</dd>
+</dl>
+</div></div>
+<p>If you encounter problems, please reference the <a class="reference external" href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-troubleshooting.html">AWS Troubleshooting Document</a></p>
+</section>
+<section id="importing-your-credentials">
+<h3>Importing your credentials<a class="headerlink" href="#importing-your-credentials" title="Link to this heading"></a></h3>
+<p>Open a command prompt window and use the <code class="docutils literal notranslate"><span class="pre">aws</span> <span class="pre">configure</span> <span class="pre">import</span></code> command with the <code class="docutils literal notranslate"><span class="pre">--csv</span></code> option to import the
+<code class="docutils literal notranslate"><span class="pre">credentials.csv</span></code> file <a class="reference internal" href="#making-a-profile">provided by a system admin</a></p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-V2luZG93cw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-V2luZG93cw==" name="V2luZG93cw==" role="tab" tabindex="0">Windows</button><button aria-controls="panel-1-bWFjT1M=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-bWFjT1M=" name="bWFjT1M=" role="tab" tabindex="-1">macOS</button></div><div aria-labelledby="tab-1-V2luZG93cw==" class="sphinx-tabs-panel group-tab" id="panel-1-V2luZG93cw==" name="V2luZG93cw==" role="tabpanel" tabindex="0"><p>Run the following command, replacing <code class="docutils literal notranslate"><span class="pre">file://credentials.csv</span></code> with the path to your <code class="docutils literal notranslate"><span class="pre">credentials.csv</span></code> file.</p>
+<blockquote>
+<div><div class="highlight-doscon notranslate"><div class="highlight"><pre><span></span><span class="gp">C:\&gt;</span> aws configure import --csv file://credentials.csv
+</pre></div>
+</div>
+</div></blockquote>
+</div><div aria-labelledby="tab-1-bWFjT1M=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-bWFjT1M=" name="bWFjT1M=" role="tabpanel" tabindex="0"><p>Run the following command, replacing <code class="docutils literal notranslate"><span class="pre">path/to/credentials.csv</span></code> with the path to your <code class="docutils literal notranslate"><span class="pre">credentials.csv</span></code> file.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>aws<span class="w"> </span>configure<span class="w"> </span>import<span class="w"> </span>--csv<span class="w"> </span>path/to/credentials.csv
+</pre></div>
+</div>
+</div></blockquote>
+</div></div>
+</section>
+</section>
+<section id="getting-the-package-from-codeartifact">
+<h2>Getting the package from CodeArtifact<a class="headerlink" href="#getting-the-package-from-codeartifact" title="Link to this heading"></a></h2>
+<p>Once you have configured your AWS CLI, you can install the <code class="docutils literal notranslate"><span class="pre">LabGuruAPI</span></code> package <strong>almost</strong> as easily as everything else.
+The only difference is that you will need to log in to CodeArtifact and add the code artifact repository to <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
+Luckily, this can be done in a single command via the AWS CLI. You will remain logged in for 12 hours. The shell command
+is the same for each operating system.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">aws</span> <span class="n">codeartifact</span> <span class="n">login</span> <span class="o">--</span><span class="n">tool</span> <span class="n">pip</span> <span class="o">--</span><span class="n">repository</span> <span class="n">foundry</span><span class="o">-</span><span class="n">pypi</span> <span class="o">--</span><span class="n">domain</span> <span class="n">grobio</span><span class="o">-</span><span class="n">foundry</span> <span class="o">--</span><span class="n">domain</span><span class="o">-</span><span class="n">owner</span> <span class="mi">409124030547</span> <span class="o">--</span><span class="n">region</span> <span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>You can then install <code class="docutils literal notranslate"><span class="pre">foundrybackend</span></code> package, which includes the <code class="docutils literal notranslate"><span class="pre">LabGuruAPI</span></code> module.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">foundrybackend</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Running this command will change the default python repository from pypi to CodeArtifact <em>for your entire system</em>.
+To switch back, run the command</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pip config unset global.index-url
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../getting_started.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="session_basics.html" class="btn btn-neutral float-right" title="SESSION Basics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Robert Warden-Rothman, Mark Cerutti.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
